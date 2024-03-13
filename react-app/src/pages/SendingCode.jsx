@@ -30,25 +30,29 @@ function SendCode() {
     const formData = new FormData();
     formData.append("file", selectedFile);
 
-    httpClient.post("//localhost:5000/upload", formData)
-      .then((response) => {
-        // Obsługa odpowiedzi z backendu po przesłaniu pliku
-        console.log("Plik został przesłany pomyślnie");
-      })
-      .catch((error) => {
-        // Obsługa błędów
-        console.error("Wystąpił błąd podczas przesyłania pliku", error);
-      });
-    // try {
-    //     await httpClient.post("//localhost:5000/login", {
-    //     email,
-    //     password,
-    // });
+    try {
+      httpClient.post("//localhost:5000/upload", formData);
+      console.log("Plik został przesłany pomyślnie");
+    } catch (error) {
+    //   if (error.response.status === 401) {
+    //     alert("Invalid credentials");
+    // }
+      console.log("Failed to upload a file");
+    }
+    // httpClient.post("//localhost:5000/upload", formData)
+    //   .then((response) => {
+    //     // Obsługa odpowiedzi z backendu po przesłaniu pliku
+    //     console.log("Plik został przesłany pomyślnie");
+    //   })
+    //   .catch((error) => {
+    //     // Obsługa błędów
+    //     console.error("Wystąpił błąd podczas przesyłania pliku", error);
+    //   });
   };
 
-    const handleNotAuthenticated = () => {
-        alert("You are not authenticated");
-    }
+    // const handleNotAuthenticated = () => {
+    //     alert("You are not authenticated");
+    // }
 
   return (
     <div>

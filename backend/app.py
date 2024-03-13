@@ -3,15 +3,15 @@ from flask_bcrypt import Bcrypt
 from models import db, User
 from config import ApplicationConfig
 from flask_session import Session
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 import docker
 
 
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 app.config.from_object(ApplicationConfig)
 
 bcrypt = Bcrypt(app)
-CORS(app, supports_credentials=True)
 server_session = Session(app)
 db.init_app(app)
 
@@ -56,6 +56,7 @@ def register_user():
     })
 
 @app.route("/login", methods=["POST"])
+# @cross_origin()
 def login_user():
     email = request.json["email"]
     password = request.json["password"]
@@ -103,21 +104,27 @@ def upload_file():
     if file.filename == '':
         return 'Empty file name', 400
 
-    file.save('//wsl.localhost/Ubuntu/home/rozki/dyplom_app/algorithm_running/' + 'algorithm.py')
+    # file.save("C:/Users/rozko/Documents/DYPLOM/ranking_algorithms/backend/algorithm_running/algorithm.py")
 
     try:
+        print("BEFOREEEEE")
         client = docker.from_env()
         print("IM HEEERE")
 
         image, build_logs = client.images.build(path='.', dockerfile='Dockerfile')
 
-        container = client.containers.run(image.id, detach=True)
+        container = client.containers.run(image.id, detach=True) # remove=True
+        for line in container.logs(stream=True):
+            line_str = line.decode('utf-8')
+            result_list = eval(line_str)
+            print(result_list[2])
+            break
 
         print("CONTAINER RUN!")
 
         return jsonify({"success": True, "message": "Container started successfully."})
     except Exception as e:
-        print("Error, LOL")
+        print("Error, LOL: ", str(e))
         return jsonify({"success": False, "error": str(e)})
 
     return 'Successfully sent file', 200

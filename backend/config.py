@@ -15,3 +15,5 @@ class ApplicationConfig:
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True # jezeli nie wykorzystuje secret_key to to dać na false
     SESSION_REDIS = redis.from_url("redis://127.0.0.1:6379")
+
+    # CORS_HEADERS = 'Content-Type'
