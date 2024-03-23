@@ -9,7 +9,7 @@ class ApplicationConfig:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://jakub_rozkosz:!Jakub01@localhost:3306/alg_ranking_db'
+    SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://root:!Mysql2001@localhost:3306/alg_ranking_db'
 
     SESSION_TYPE = "redis"
     SESSION_PERMANENT = False

@@ -111,16 +111,21 @@ def upload_file():
         client = docker.from_env()
         print("IM HEEERE")
 
-        image, build_logs = client.images.build(path='.', dockerfile='Dockerfile')
+        image, build_logs = client.images.build(path='.')
+
+        print('AFTER BUILD')
 
         container = client.containers.run(image.id, detach=True) # remove=True
-        for line in container.logs(stream=True):
-            line_str = line.decode('utf-8')
-            result_list = eval(line_str)
-            print(result_list[2])
-            break
 
         print("CONTAINER RUN!")
+
+        # for line in container.logs(stream=True):
+        #     line_str = line.decode('utf-8')
+        #     result_list = eval(line_str)
+        #     print(result_list[2])
+        #     break
+
+        print('LOGS OKEY')
 
         return jsonify({"success": True, "message": "Container started successfully."})
     except Exception as e:

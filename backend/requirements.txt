@@ -6,3 +6,6 @@ flask-session
 redis
 flask-cors
 docker
+mysql-connector-python
+numpy
+bandit

