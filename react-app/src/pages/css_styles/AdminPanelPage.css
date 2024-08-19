@@ -1,0 +1,72 @@
+.admin-panel-container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.user-list {
+    flex: 1;
+    max-width: 400px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.user-list-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.user-item {
+    position: relative;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+}
+
+.user-item-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.user-item-button:hover {
+    background-color: #0056b3;
+}
+
+.info-form {
+    flex: 2;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 400px;
+    min-height: 300px;
+}
+
+.info-form textarea {
+    width: 100%;
+    height: 150px;
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+

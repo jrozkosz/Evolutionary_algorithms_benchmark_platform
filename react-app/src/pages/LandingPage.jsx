@@ -1,51 +1,58 @@
 import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
+import Layout from "./Layout";
+import { useOnMountUnsafe } from "../OnMountUnsafe";
+import "./css_styles/LandingPage.css";
 
 function LandingPage() {
     const [user, setUser] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    const logoutUser = async () => {
-        await httpClient.post("//localhost:5000/logout");
-        window.location.href = "/";
-    };
-
-    useEffect(() => {
+    useOnMountUnsafe(() => {
         (async () => {
             try {
-            const resp = await httpClient.get("//localhost:5000/@me");
-            setUser(resp.data);
+                const resp = await httpClient.get("//localhost:5000/@me");
+                setUser(resp.data);
+                setIsAdmin(resp.data.is_admin);
+                // window.location.href = "/upload";
             } catch (error) {
-            console.log("Not authenticated");
+                console.log("Not authenticated");
             }
         })();
     }, []);
 
-    return (
-        <div>
-        <h1>Welcome to this React Application</h1>
-        {user != null ? (
-            <div>
-            <h2>Logged in</h2>
-            <h3>ID: {user.id}</h3>
-            <h3>Email: {user.email}</h3>
+    if (user !== null) {
+        return (
+            <Layout is_admin={isAdmin}>
+                <div className="landing-page-wrapper">
+                    <div className="landing-page">
+                        <h1>Welcome to this Ranking Evolutionary Algorithms Application</h1>
+                        <p>You are logged in</p>
+                        <p><strong>ID: </strong>{user.id}</p>
+                        <p><strong>Email: </strong>{user.email}</p>
+                    </div>
+                </div>
+            </Layout>
+        )
+    }
 
-            <button onClick={logoutUser}>Logout</button>
+    return (
+        <div className="landing-page-wrapper">
+            <div className="landing-page">
+                <h1>Welcome to this Ranking Evolutionary Algorithms Application</h1>
+                <p>You are not logged in</p>
+                <div>
+                    <a href="/login">
+                        <button className="landing-page-button">Login</button>
+                    </a>
+                    <a href="/register">
+                        <button className="landing-page-button">Register</button>
+                    </a>
+                </div>
             </div>
-        ) : (
-            <div>
-            <p>You are not logged in</p>
-            <div>
-                <a href="/login">
-                <button>Login</button>
-                </a>
-                <a href="/register">
-                <button>Register</button>
-                </a>
-            </div>
-            </div>
-        )}
         </div>
     );
-    };
+    
+}
 
 export default LandingPage;

@@ -1,0 +1,61 @@
+/* Navbar.css */
+
+.navbar-container {
+  position: relative; /* Umożliwia używanie absolutnego pozycjonowania wewnątrz */
+  background-color: #333; /* Tło paska nawigacyjnego */
+}
+
+.navbar {
+  padding: 10px 20px; /* Odstępy wewnętrzne */
+  display: flex; /* Ustawia elementy w poziomie */
+  justify-content: space-between; /* Rozstawia elementy na początku i końcu */
+  align-items: center; /* Wyrównuje elementy w pionie */
+  margin-right: 100px;
+}
+
+.navbar-list {
+  list-style-type: none; /* Usuwa wypunktowanie */
+  margin: 0; /* Usuwa margines */
+  padding: 0; /* Usuwa wypełnienie */
+  display: flex; /* Ustawia elementy w poziomie */
+  flex: 1; /* Pozwala tej sekcji zajmować maksymalną szerokość */
+  justify-content: space-evenly; /* Rozkłada linki równomiernie */
+}
+
+.navbar-item {
+  margin: 0; /* Usuwa marginesy dla elementów listy */
+}
+
+.navbar-item a {
+  color: #fff; /* Kolor tekstu */
+  text-decoration: none; /* Usuwa podkreślenie linków */
+  padding: 10px 15px; /* Odstępy wewnętrzne dla linków */
+  display: block; /* Ustawia linki jako blokowe, aby zajmowały cały obszar */
+}
+
+.navbar-item a:hover {
+  background-color: #575757; /* Kolor tła linku podczas najechania */
+  border-radius: 4px; /* Zaokrąglone rogi tła linku */
+}
+
+.navbar-logout-button {
+  position: absolute; /* Absolutne pozycjonowanie */
+  right: 20px; /* Odstęp od prawej krawędzi */
+  top: 50%; /* Wyrównuje przycisk w pionie do środka kontenera */
+  transform: translateY(-50%); /* Centruje przycisk w pionie */
+}
+
+.navbar-logout-button button {
+  background-color: #f44336; /* Kolor tła przycisku */
+  color: white; /* Kolor tekstu przycisku */
+  border: none; /* Usuwa obramowanie przycisku */
+  padding: 1px 2px; /* Odstępy wewnętrzne dla przycisku */
+  cursor: pointer; /* Wskaźnik kursora na przycisk */
+  border-radius: 4px; /* Zaokrąglone rogi przycisku */
+  width: 60px;
+  height: 30px;
+}
+
+.navbar-logout-button button:hover {
+  background-color: #e53935; /* Kolor tła przycisku podczas najechania */
+}

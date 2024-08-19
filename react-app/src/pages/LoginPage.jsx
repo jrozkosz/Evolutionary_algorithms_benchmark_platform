@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import httpClient from "../httpClient";
+import "./css_styles/AuthPage.css";
 
 function LoginPage() {
     const [email, setEmail] = useState("");
@@ -10,46 +11,57 @@ function LoginPage() {
 
         try {
             await httpClient.post("//localhost:5000/login", {
-            email,
-            password,
-        });
+                email,
+                password,
+            });
 
-        window.location.href = "/send_code";
+            window.location.href = "/";
         } catch (error) {
-        if (error.response.status === 401) {
-            alert("Invalid credentials");
-        }
+            if (error.response) {
+                if (error.response.status === 401) {
+                    alert("Invalid credentials");
+                } else if (error.response.status === 403) {
+                    alert(error.response.data.error);
+                } else {
+                    alert(`An unexpected error occurred: ${error.response.status}`);
+                }
+            } else {
+                console.error("Error details:", error);
+                alert("An unexpected error occurred. Please try again later.");
+            }
         }
     };
 
     return (
-        <div>
-        <h1>Log Into Your Account</h1>
-        <form>
-            <div>
-            <label>Email: </label>
-            <input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                id=""
-            />
-            </div>
-            <div>
-            <label>Password: </label>
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                id=""
-            />
-            </div>
-            <button type="button" onClick={() => logInUser()}>
-            Submit
-            </button>
-        </form>
+        <div className="auth-page">
+            <h1>Welcome to the Evolutionary Algorithms Ranking App</h1>
+            <h2>Log into your account</h2>
+            <form className="auth-form">
+                <div>
+                    <label>Email: </label>
+                    <input
+                        type="text"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label>Password: </label>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <button type="button" onClick={logInUser}>
+                    Log in
+                </button>
+                <a href="/register" className="link-button">
+                    Create a new account
+                </a>
+            </form>
         </div>
     );
-    };
+}
 
 export default LoginPage;
