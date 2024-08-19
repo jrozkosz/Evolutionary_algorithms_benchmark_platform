@@ -88,23 +88,3 @@ class Evolutionary:
         new_pop = worst_coord[:len(P_pop)]
 
         return new_pop
-
-
-# os.system("/home/jrozkosz/Documents/STUDIA/dyplom ls -l")
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)
-# result = subprocess.run(["ls", "-l"], capture_output=True, text=True, check=True)

@@ -1,0 +1,361 @@
+Run number 0
+36504.26039788785
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  1
+Run number 1
+59107.69685352776
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  2
+Run number 2
+25834.595764604786
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  3
+Run number 3
+18906.364689038503
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  4
+Run number 4
+37321.1462374588
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  5
+Run number 5
+28858.947787516252
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  6
+Run number 6
+28955.78612387306
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  7
+Run number 7
+30612.77142559098
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  8
+Run number 8
+42858.03208058884
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  9
+Run number 9
+42336.97863335311
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  10
+Run number 0
+4396.203910615519
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  11
+Run number 1
+3098.265244501463
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  12
+Run number 2
+2313.709743060227
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  13
+Run number 3
+1779.4511068392762
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  14
+Run number 4
+1446.8011665375163
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  15
+Run number 5
+1985.2475029151465
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  16
+Run number 6
+3015.698766741079
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  17
+Run number 7
+3104.468163972011
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  18
+Run number 8
+5301.089856064681
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  19
+Run number 9
+2884.196734902989
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  20
+
+Error: Test functions are only defined for D=2,10,20.
+
+Run number 0
+91257.86649999444
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  21
+Run number 1
+36727.80601421121
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  22
+Run number 2
+50693.365501048305
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  23
+Run number 3
+125726.9307176365
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  24
+Run number 4
+86052.84883829982
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  25
+Run number 5
+80937.57151992238
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  26
+Run number 6
+59624.054655982975
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  27
+Run number 7
+55949.49165145609
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  28
+Run number 8
+51645.34811031211
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  29
+Run number 9
+76560.40584668565
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  30
+
+Error: Test functions are only defined for D=2,10,20.
+
+Run number 0
+865.3692901062363
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  31
+Run number 1
+1202.984687689819
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  32
+Run number 2
+2812.9937492644804
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  33
+Run number 3
+1352.0139953788848
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  34
+Run number 4
+2442.671293479094
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  35
+Run number 5
+1382.7205663501663
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  36
+Run number 6
+1259.9415877266445
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  37
+Run number 7
+1222.4047827013615
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  38
+Run number 8
+865.255390400996
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  39
+Run number 9
+2705.7072323170432
+Budget exhausted - limit of objective function calls reached.
+ALL RUNS:  40
+CURRENT_STATE:  40
+ALG_RESULTS:  [('asjfljlasjd', [12921.813489083901, 2001]), ('asjfljlasjd', [37226.491702102576, 2001]), ('asjfljlasjd', [40425.74722124547, 2001]), ('asjfljlasjd', [11181.876181323029, 2001]), ('asjfljlasjd', [11582.175131509872, 2001]), ('asjfljlasjd', [76565.563632398, 2001]), ('asjfljlasjd', [16559.257991245562, 2001]), ('asjfljlasjd', [41120.17210948149, 2001]), ('asjfljlasjd', [26709.101323945586, 2001]), ('asjfljlasjd', [24741.880497516137, 2001])]
+ALG_RESULTS:  [('cf54addb237b4c539a91cedb196eb58a', [33804.26039788785, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [56407.69685352776, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [23134.595764604786, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [16206.364689038503, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [34621.1462374588, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [26158.947787516252, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [26255.78612387306, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [27912.77142559098, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [40158.03208058884, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [39636.97863335311, 2001])]
+('asjfljlasjd', [11181.876181323029, 2001])
+('asjfljlasjd', [11582.175131509872, 2001])
+('asjfljlasjd', [12921.813489083901, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [16206.364689038503, 2001])
+('asjfljlasjd', [16559.257991245562, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [23134.595764604786, 2001])
+('asjfljlasjd', [24741.880497516137, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [26158.947787516252, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [26255.78612387306, 2001])
+('asjfljlasjd', [26709.101323945586, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [27912.77142559098, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [33804.26039788785, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [34621.1462374588, 2001])
+('asjfljlasjd', [37226.491702102576, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [39636.97863335311, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [40158.03208058884, 2001])
+('asjfljlasjd', [40425.74722124547, 2001])
+('asjfljlasjd', [41120.17210948149, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [56407.69685352776, 2001])
+('asjfljlasjd', [76565.563632398, 2001])
+FUNCTION_POINTS:  {'asjfljlasjd': 113, 'cf54addb237b4c539a91cedb196eb58a': 97}
+58.0
+42.0
+DIM10 58.0
+DIM10 42.0
+ALG_RESULTS:  [('asjfljlasjd', [2655.8912865797556, 2001]), ('asjfljlasjd', [3505.06959563615, 2001]), ('asjfljlasjd', [2367.516891835564, 2001]), ('asjfljlasjd', [1423.7219226206244, 2001]), ('asjfljlasjd', [2962.9223858184873, 2001]), ('asjfljlasjd', [8329.493568802947, 2001]), ('asjfljlasjd', [1101.656356528007, 2001]), ('asjfljlasjd', [548.7789546181351, 2001]), ('asjfljlasjd', [3395.53504761117, 2001]), ('asjfljlasjd', [1032.4943462549204, 2001])]
+ALG_RESULTS:  [('cf54addb237b4c539a91cedb196eb58a', [4096.203910615519, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [2798.265244501463, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [2013.709743060227, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [1479.4511068392762, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [1146.8011665375163, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [1685.2475029151465, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [2715.698766741079, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [2804.468163972011, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [5001.089856064681, 2001]), ('cf54addb237b4c539a91cedb196eb58a', [2584.196734902989, 2001])]
+('asjfljlasjd', [548.7789546181351, 2001])
+('asjfljlasjd', [1032.4943462549204, 2001])
+('asjfljlasjd', [1101.656356528007, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [1146.8011665375163, 2001])
+('asjfljlasjd', [1423.7219226206244, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [1479.4511068392762, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [1685.2475029151465, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [2013.709743060227, 2001])
+('asjfljlasjd', [2367.516891835564, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [2584.196734902989, 2001])
+('asjfljlasjd', [2655.8912865797556, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [2715.698766741079, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [2798.265244501463, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [2804.468163972011, 2001])
+('asjfljlasjd', [2962.9223858184873, 2001])
+('asjfljlasjd', [3395.53504761117, 2001])
+('asjfljlasjd', [3505.06959563615, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [4096.203910615519, 2001])
+('cf54addb237b4c539a91cedb196eb58a', [5001.089856064681, 2001])
+('asjfljlasjd', [8329.493568802947, 2001])
+FUNCTION_POINTS:  {'asjfljlasjd': 111, 'cf54addb237b4c539a91cedb196eb58a': 99}
+56.0
+44.0
+DIM10 114.0
+DIM10 86.0
+ALG_RESULTS:  [('asjfljlasjd', [47421.17468581545, 10001]), ('asjfljlasjd', [61731.164368871345, 10001]), ('asjfljlasjd', [77957.9734990247, 10001]), ('asjfljlasjd', [40233.2089598486, 10001]), ('asjfljlasjd', [59836.90013470902, 10001]), ('asjfljlasjd', [70598.20347327409, 10001]), ('asjfljlasjd', [62638.87464975086, 10001]), ('asjfljlasjd', [71641.42163847796, 10001]), ('asjfljlasjd', [42196.06408417584, 10001]), ('asjfljlasjd', [40132.673448003254, 10001])]
+ALG_RESULTS:  [('cf54addb237b4c539a91cedb196eb58a', [88557.86649999444, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [34027.80601421121, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [47993.365501048305, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [123026.9307176365, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [83352.84883829982, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [78237.57151992238, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [56924.054655982975, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [53249.49165145609, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [48945.34811031211, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [73860.40584668565, 10001])]
+('cf54addb237b4c539a91cedb196eb58a', [34027.80601421121, 10001])
+('asjfljlasjd', [40132.673448003254, 10001])
+('asjfljlasjd', [40233.2089598486, 10001])
+('asjfljlasjd', [42196.06408417584, 10001])
+('asjfljlasjd', [47421.17468581545, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [47993.365501048305, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [48945.34811031211, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [53249.49165145609, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [56924.054655982975, 10001])
+('asjfljlasjd', [59836.90013470902, 10001])
+('asjfljlasjd', [61731.164368871345, 10001])
+('asjfljlasjd', [62638.87464975086, 10001])
+('asjfljlasjd', [70598.20347327409, 10001])
+('asjfljlasjd', [71641.42163847796, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [73860.40584668565, 10001])
+('asjfljlasjd', [77957.9734990247, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [78237.57151992238, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [83352.84883829982, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [88557.86649999444, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [123026.9307176365, 10001])
+FUNCTION_POINTS:  {'cf54addb237b4c539a91cedb196eb58a': 90, 'asjfljlasjd': 120}
+35.0
+65.0
+DIM20 121.0
+DIM20 179.0
+ALG_RESULTS:  [('asjfljlasjd', [1483.9629916048707, 10001]), ('asjfljlasjd', [630.9972012152864, 10001]), ('asjfljlasjd', [1084.2443876473294, 10001]), ('asjfljlasjd', [726.8733955064654, 10001]), ('asjfljlasjd', [1043.935825854819, 10001]), ('asjfljlasjd', [1578.8495260089458, 10001]), ('asjfljlasjd', [627.7200327517685, 10001]), ('asjfljlasjd', [1459.6950634073653, 10001]), ('asjfljlasjd', [1961.8511596903618, 10001]), ('asjfljlasjd', [493.4935222863347, 10001])]
+ALG_RESULTS:  [('cf54addb237b4c539a91cedb196eb58a', [565.3692901062363, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [902.9846876898191, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [2512.9937492644804, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [1052.0139953788848, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [2142.671293479094, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [1082.7205663501663, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [959.9415877266445, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [922.4047827013615, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [565.255390400996, 10001]), ('cf54addb237b4c539a91cedb196eb58a', [2405.7072323170432, 10001])]
+('asjfljlasjd', [493.4935222863347, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [565.255390400996, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [565.3692901062363, 10001])
+('asjfljlasjd', [627.7200327517685, 10001])
+('asjfljlasjd', [630.9972012152864, 10001])
+('asjfljlasjd', [726.8733955064654, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [902.9846876898191, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [922.4047827013615, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [959.9415877266445, 10001])
+('asjfljlasjd', [1043.935825854819, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [1052.0139953788848, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [1082.7205663501663, 10001])
+('asjfljlasjd', [1084.2443876473294, 10001])
+('asjfljlasjd', [1459.6950634073653, 10001])
+('asjfljlasjd', [1483.9629916048707, 10001])
+('asjfljlasjd', [1578.8495260089458, 10001])
+('asjfljlasjd', [1961.8511596903618, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [2142.671293479094, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [2405.7072323170432, 10001])
+('cf54addb237b4c539a91cedb196eb58a', [2512.9937492644804, 10001])
+FUNCTION_POINTS:  {'asjfljlasjd': 109, 'cf54addb237b4c539a91cedb196eb58a': 101}
+54.0
+46.0
+DIM20 233.0
+DIM20 167.0
+{'asjfljlasjd': 233.0, 'cf54addb237b4c539a91cedb196eb58a': 167.0}
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  2
+THRESHOLDS REACHED:  1
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  0
+THRESHOLDS REACHED:  1
+THRESHOLDS REACHED:  1
+THRESHOLDS REACHED:  2
+THRESHOLDS REACHED:  0
+Optimum percent:  0.0
+Threshold percent:  0.0035
+Budget percent:  0.0
+0.00175
+26297.73660301385
+10603.727272551592
