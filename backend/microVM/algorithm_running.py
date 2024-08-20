@@ -1,15 +1,8 @@
 from CEC2022 import CECfunctions, FuncCallsLimitReachedException
-import os
-import time
 import json
 import numpy as np
 import sys
-import subprocess
-
-try:
-    from algorithm import evolutionary_algorithm
-except Exception as e:
-    print('Module does not exist.')
+import importlib
 
 class RunningAlgorithm:
     def __init__(self, alg_name) -> None:
@@ -75,8 +68,20 @@ class RunningAlgorithm:
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         alg_name = sys.argv[1]
+        module_name = f"algorithm_{alg_name}"
+
+        try:
+            algorithm_module = importlib.import_module(module_name)
+            evolutionary_algorithm = algorithm_module.evolutionary_algorithm
+        except ImportError:
+            print('Module does not exist.')
+            exit(1)
+        except AttributeError:
+            print('Module does not contain the required function.')
+            exit(1)
         
         RankingCalc = RunningAlgorithm(alg_name)
         RankingCalc.run_algorithm()
     else:
         print("No name provided.")
+        exit(1)

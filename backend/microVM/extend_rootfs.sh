@@ -26,18 +26,13 @@ for FILE in "${FILES_TO_UPDATE[@]}"; do
     fi
 done
 
-ORIGINAL_ROOTFS="ubuntu-22.04.ext4"
-MODIFIED_ROOTFS="prepared-ubuntu-22.04.ext4"
-
-# Create a copy of the original rootfs image
-echo "Creating a copy of the original rootfs image..."
-cp "$ORIGINAL_ROOTFS" "$MODIFIED_ROOTFS"
+ROOTFS="ubuntu-22.04.ext4"
 
 # Mount the rootfs image
 echo "Mounting the rootfs image..."
 sudo mkdir -p /mnt/vm_root
-if ! sudo mount -o loop $MODIFIED_ROOTFS /mnt/vm_root; then
-    echo "Failed to mount $MODIFIED_ROOTFS"
+if ! sudo mount -o loop $ROOTFS /mnt/vm_root; then
+    echo "Failed to mount $ROOTFS"
     exit 1
 fi
 
@@ -45,16 +40,15 @@ fi
 echo "Copying python virtual environment to the rootfs..."
 if ! sudo cp -r "$VENV_DIR"/ /mnt/vm_root/root; then
     echo "Failed to copy venv..."
-    sudo umount /mnt/vm_root
+    sudo umount /mnt_vm_root
     exit 1
 fi
 
 # Unmount the rootfs image
 echo "Unmounting the rootfs image..."
-if ! sudo umount /mnt/vm_root; then
-    echo "Failed to unmount /mnt/vm_root"
+if ! sudo umount /mnt_vm_root; then
+    echo "Failed to unmount /mnt_vm_root"
     exit 1
 fi
 
-echo "Modified rootfs image created: $MODIFIED_ROOTFS"
-echo "Python virtual environment with numpy installed was copied to rootfs."
+echo "Rootfs image updated with Python virtual environment and numpy installed."

@@ -19,7 +19,7 @@ chmod 400 ./ubuntu-22.04.id_rsa
 sudo ./resize_rfs_memory.sh
 
 ## Install in the rootfs python virtual environment with all the necessary libraries
-sudo ./resize_rootfs.sh
+sudo ./extend_rootfs.sh
 
 # Getting a Firecracker Binary
 ARCH="$(uname -m)"

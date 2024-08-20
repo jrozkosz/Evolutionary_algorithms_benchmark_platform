@@ -19,7 +19,7 @@ ALGORITHM_NAME=$9
 CONFIG_TEMPLATE="vm_config_template.json"
 CONFIG_FILE="vm_config_$(date +%s).json"
 ROOTFS="ubuntu-22.04_$(date +%s).ext4"
-ORIGINAL_ROOTFS="prepared-ubuntu-22.04.ext4"
+ORIGINAL_ROOTFS="ubuntu-22.04.ext4"
 INIT_SCRIPT="init_setup.sh"
 
 # Print all the arguments
@@ -103,13 +103,16 @@ if ! sudo umount /mnt/vm_root; then
     exit 1
 fi
 
+# Remove the algorithm file
+rm $ALGORITHM_FILE
+
 # Start Firecracker
 echo "Starting Firecracker microVM..."
 sudo rm -f $FIRECRACKER_SOCKET
 sudo ./firecracker --api-sock "$FIRECRACKER_SOCKET" --config-file "$CONFIG_FILE" &
 
 # Wait for the microVM to boot and configure the network
-sleep 1.5
+sleep 2
 
 # Remove the copied rootfs image and configuration file after the microVM has finished its work
 echo "Removing the copied rootfs image and configuration file..."
@@ -134,22 +137,25 @@ ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP "source microVM_venv/bin
                 /root/microVM_venv/bin/python3 /root/$ALGORITHM_RUNNING "$ALGORITHM_NAME" > running_logs_$ALGORITHM_NAME.txt && \
                 deactivate"
 
+RET_CODE=$?
+echo "RETURN CODE"
+echo $RET_CODE
+
 # wait for the last progress_file.txt update
 sleep 6
 
-# Zatrzymanie procesu pętli po zakończeniu run user code ranking
 kill $SCP_LOOP_PID
-
-# Dodatkowe sprawdzenie, czy proces został zakończony
 wait $SCP_LOOP_PID 2>/dev/null
 
-ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP "ls"
-
 # Copy the results of the ranking from microVM to the host
+# if [ $RET_CODE -eq 0 ]; then
 scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/running_logs_$ALGORITHM_NAME.txt ../running_files/
 scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/running_results_$ALGORITHM_NAME.json ../running_files/
+# fi
 
 # Kill the microVM
 ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP 'reboot'
 
 sudo rm -f $FIRECRACKER_SOCKET
+
+exit $RET_CODE

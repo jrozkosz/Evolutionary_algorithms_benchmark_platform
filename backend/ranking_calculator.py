@@ -2,8 +2,7 @@ import json
 import numpy as np
 
 class RankingCalculator:
-    def __init__(self, alg_name) -> None:
-        self.alg_name = alg_name
+    def __init__(self) -> None:
         self.call_count = 0
         self.g_optimum = [300, 400, 600, 800, 900, 1800, 2000, 2200, 2300, 2400, 2600, 2700]
         self.functions = [1, 2]
@@ -13,8 +12,7 @@ class RankingCalculator:
         self.runs = 10
             
     def cec_ranking_method(self, data_file_all_algorithms):
-        with open(data_file_all_algorithms) as file:
-            data = json.load(file)
+        data = data_file_all_algorithms
         cec_scores = {}
         for dim, max_fes in zip(self.dimensions, self.max_call_count):
             for fun in self.functions:
@@ -50,12 +48,10 @@ class RankingCalculator:
                     print(f"DIM{dim}", cec_scores[alg_name])
             
         print(cec_scores)
-        # self.write_to_json({"cec": cec_scores}, self.results_file)
         return cec_scores
 
     def proposed_ranking_method(self, data_file):
-        with open(data_file) as file:
-            data = json.load(file)
+        data = data_file
         length_out = 51
         threshold = 10**np.linspace(np.log10(1e3), np.log10(1e-8), length_out)[:-1]
         score_weight = 0.5
@@ -86,12 +82,11 @@ class RankingCalculator:
         print("Threshold percent: ", threshold_percent)
         budget_left_percent = budget_left / all_budget
         print("Budget percent: ", budget_left_percent)
-        final_score = g_optimum_percent + score_weight*threshold_percent + (score_weight**2)*budget_left_percent
+        final_score = (g_optimum_percent + score_weight*threshold_percent + (score_weight**2)*budget_left_percent) / 3
         print(final_score)
         proposed_scores = {"final_score": final_score, "optimum": g_optimum_percent, "threshold": threshold_percent, "budget": budget_left_percent}
 
-        self.write_to_json({"proposed": proposed_scores}, self.results_file)
-        return final_score
+        return proposed_scores
 
     def find_no_of_thresholds_reached(self, threshold, error):
         num = 0
@@ -110,8 +105,7 @@ class RankingCalculator:
                 return self.find_thresholds_reached_divide_and_conquer(threshold[:int(len(threshold)/2)], error)
     
     def classic_ranking_method(self, data_file):
-        with open(data_file) as file:
-            data = json.load(file)
+        data = data_file
         errors = []
         all_runs = len(self.dimensions)*len(self.functions)*self.runs
         for dim, max_fes in zip(self.dimensions, self.max_call_count):

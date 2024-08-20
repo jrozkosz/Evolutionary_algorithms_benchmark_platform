@@ -42,6 +42,7 @@ class Algorithm(db.Model):
     user_id = db.Column(db.String(32), unique=True, nullable=False)
     running = db.Column(db.Boolean, nullable=False, default=False)
     finished = db.Column(db.Boolean, nullable=False, default=False)
+    error_occurred = db.Column(db.Boolean, nullable=False, default=False)
     running_progress = db.Column(db.Float, default=0.0)
     microVM_IP_addr = db.Column(db.String(15), nullable=True)
     

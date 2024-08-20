@@ -11,6 +11,7 @@ function SendingCodePage() {
   const [notUploaded, setNotUploaded] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [information, setInformation] = useState("A file has not been uploaded yet.")
 
   useOnMountUnsafe(() => {
     (async () => {
@@ -41,7 +42,13 @@ function SendingCodePage() {
           if (error.response.data.error === "Algorithm has not yet been uploaded") {
             setNotUploaded(true);
             clearInterval(interval);
-          } else {
+          } else if (error.response.data.error ===  "An error occurred when processing the algorithm") {
+            setNotUploaded(true);
+            setInformation("An error occurred when processing the algorithm. Please double check whether your \
+              algorithm interface is correct and send your code again.");
+            clearInterval(interval);
+          }
+          else {
             console.error("Error details:", error);
             alert("An unexpected error occurred. Please try again later.");
           }
@@ -102,7 +109,7 @@ function SendingCodePage() {
         )}
         <div>
           {notUploaded ? (
-            <p>The file has not been uploaded yet.</p>
+            <p>{information}</p>
           ) : progress !== null ? (
             <div>
               <h2>Progress: {progress}%</h2>

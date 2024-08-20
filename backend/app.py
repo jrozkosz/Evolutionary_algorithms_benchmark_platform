@@ -31,13 +31,14 @@ migrate = Migrate(app, db)
 
 with app.app_context():
     # db.drop_all()
-    # User.query.filter_by(username='admin').delete()
-    # db.session.commit()
     db.create_all()
-    # hashed_password = bcrypt.generate_password_hash(password='admin')
-    # user = User(username='admin', email='admin', password=hashed_password, is_confirmed=True, is_admin=True)
-    # db.session.add(user)
-    # db.session.commit()
+    
+    admin_exists = User.query.filter_by(username='admin').first() is not None
+    if not admin_exists:
+        hashed_password = bcrypt.generate_password_hash('admin').decode('utf-8')
+        user = User(username='admin', email='admin', password=hashed_password, is_confirmed=True, is_admin=True)
+        db.session.add(user)
+        db.session.commit()
 
 mail = Mail(app)
 
@@ -116,7 +117,6 @@ def login_user():
     user = User.query.filter_by(email=email).first()
 
     if user is None:
-        print("LOOOOOOL")
         return jsonify({"error": "Anauthorized"}), 401
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "Anauthorized"}), 401
@@ -149,7 +149,7 @@ def run_microVM(user_id, IPaddrs_significant_num: int):
             f"172.16.{IPaddrs_significant_num}.2",
             f"172.16.{IPaddrs_significant_num}.1",
             "./ubuntu-22.04.id_rsa",
-            "algorithm.py",
+            f"algorithm_{user_id}.py",
             "CEC2022.py", 
             "algorithm_running.py",
             f"{user_id}"
@@ -157,30 +157,36 @@ def run_microVM(user_id, IPaddrs_significant_num: int):
         
     with open("logs.txt", "w") as log_file:
         result = subprocess.run(command, cwd="microVM", stdout=log_file, stderr=subprocess.STDOUT)
-
-    engine = create_engine("mysql+pymysql://root:!Mysql2001@localhost:3306/alg_ranking_db", echo=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
+        print("\n\n\n\n\n\n\n\n\n\n RESULT: ", result.returncode, "\n\n\n\n\n\n\n\n\n\n\n")
     
     try:
-        print("\n\n\n TRYING TO CONNECT DB FROM SEPERATE PROCESS...\n\n\n")
-        currentAlgorithm = session.query(Algorithm).filter_by(user_id=user_id).first()
-        currentAlgorithm.running = False
-        currentAlgorithm.finished = True
-        session.commit()
+        engine = create_engine("mysql+pymysql://root:!Mysql2001@localhost:3306/alg_ranking_db", echo=True)
+        Session = sessionmaker(bind=engine)
+        session = Session()
         
-        print("\n\n UPDATING RESULTS \n\n")
-        algorithmRunningResults = update_algorithm_running_results(currentAlgorithm, session)
-        
-        # CALCULATE RANKINGS
-        print("\n\n CALC RANKINGS \n\n")
-        calculate_rankings(algorithmRunningResults, currentAlgorithm, session)
-        
-        print("\n\n\n OKEY, DONE! \n\n\n")
+        if result.returncode == 0:
+            print("\n\n\n TRYING TO CONNECT DB FROM SEPERATE PROCESS...\n\n\n")
+            currentAlgorithm = session.query(Algorithm).filter_by(user_id=user_id).first()
+            currentAlgorithm.running = False
+            currentAlgorithm.finished = True
+            session.commit()
+            
+            print("\n\n UPDATING RESULTS \n\n")
+            algorithmRunningResults = update_algorithm_running_results(currentAlgorithm, session)
+            
+            # CALCULATE RANKINGS
+            print("\n\n CALC RANKINGS \n\n")
+            calculate_rankings(algorithmRunningResults, currentAlgorithm, session)
+            
+            print("\n\n\n OKEY, DONE! \n\n\n")
+        else:
+            currentAlgorithm = session.query(Algorithm).filter_by(user_id=user_id).first()
+            currentAlgorithm.error_occurred = True
+            currentAlgorithm.running = False
+            session.commit()
     except Exception as e:
         session.rollback()
-        print(f"Błąd: {e}")
+        print(f"Error: {e}")
     finally:
         session.close()
         engine.dispose()
@@ -200,9 +206,9 @@ def update_algorithm_running_results(currentAlgorithm, session):
         currentAlgorithm.running_progress = progress
         session.commit()
     
-    os.remove(f'running_files/running_results_{currentAlgorithm.user_id}.json')
-    os.remove(f'running_files/progress_file_{currentAlgorithm.user_id}.txt')
-    os.remove(f'running_files/running_logs_{currentAlgorithm.user_id}.txt')
+    # os.remove(f'running_files/running_results_{currentAlgorithm.user_id}.json')
+    # os.remove(f'running_files/progress_file_{currentAlgorithm.user_id}.txt')
+    # os.remove(f'running_files/running_logs_{currentAlgorithm.user_id}.txt')
     
     return algRunningResults
 
@@ -278,6 +284,8 @@ def display_progress():
     user_id = session.get("user_id")
     algorithm = Algorithm.query.filter_by(user_id=user_id).first()
     if algorithm is not None:
+        if algorithm.error_occurred:
+            return jsonify({'error': "An error occurred when processing the algorithm"}), 400
         if algorithm.finished:
             return jsonify({'progress': 100})
         elif algorithm.running:
@@ -300,9 +308,12 @@ def display_progress():
 def upload_file():
     user_id = session.get("user_id")
     alreadyUploadedAlgorithm = Algorithm.query.filter_by(user_id=user_id).first()
-    print("\n okeeeej:", alreadyUploadedAlgorithm, "\n")
     if alreadyUploadedAlgorithm is not None:
-        return jsonify({"error": "Algorithm already uploaded"}), 403
+        if not alreadyUploadedAlgorithm.error_occurred:
+            return jsonify({"error": "Algorithm already uploaded"}), 403
+        else:
+            db.session.delete(alreadyUploadedAlgorithm)
+            db.session.commit()
     
     if 'file' not in request.files:
         return 'No file in a request', 400
@@ -311,8 +322,7 @@ def upload_file():
     if file.filename == '':
         return 'Empty file name', 400
 
-    file.save("microVM/algorithm.py")
-
+    file.save(f"microVM/algorithm_{user_id}.py")
     try:  
         runningAlgorithms = Algorithm.query.filter_by(running=True).all()
         print(runningAlgorithms)

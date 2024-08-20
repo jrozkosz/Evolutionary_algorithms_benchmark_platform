@@ -12,3 +12,4 @@ numpy
 bandit
 flask-mail
 itsdangerous
+flask_migrate
