@@ -28,6 +28,8 @@ sudo ./run_app.sh <br />
 sudo apt update <br />
 sudo apt install mysql-server <br />
 sudo mysql_secure_installation <br />
+<br />
+password of a mysql db root has to be set in /backend/.env file
 
 ### creating DB
 sudo mysql -u root -p <br />
