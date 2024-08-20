@@ -27,9 +27,9 @@ chmod +x *.sh
 sudo ./install_firecracker_and_others.sh
 
 ### Now it is ready and microVM can be successfully launched by backend server BUT
-each microVM has to have a network configured
-to define iptables rules host interface has to be given
-in setup_network.sh please modify HOST_IFACE to match the one you are using
-you can display your available interfaces by typing 'ip link show'
-if you are using WIFI the interface name you should use will probably start with 'wl...'
-if Ethernet - the name will probably start with 'eth...'
+each microVM has to have a network configured <br />
+to define iptables rules host interface has to be given <br />
+in setup_network.sh please modify HOST_IFACE to match the one you are using <br />
+you can display your available interfaces by typing 'ip link show' <br />
+if you are using WIFI the interface name you should use will probably start with 'wl...' <br />
+if Ethernet - the name will probably start with 'eth...' <br />
