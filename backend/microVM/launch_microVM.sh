@@ -106,10 +106,10 @@ fi
 # Start Firecracker
 echo "Starting Firecracker microVM..."
 sudo rm -f $FIRECRACKER_SOCKET
-sudo ./firecracker --api-sock "$FIRECRACKER_SOCKET" --config-file "$CONFIG_FILE" &
+sudo ./firecracker --api-sock "$FIRECRACKER_SOCKET" --config-file "$CONFIG_FILE"
 
 # Wait for the microVM to boot and configure the network
-sleep 10
+sleep 1.5
 
 # Remove the copied rootfs image and configuration file after the microVM has finished its work
 echo "Removing the copied rootfs image and configuration file..."
@@ -118,37 +118,38 @@ rm -f $CONFIG_FILE
 
 mkdir -p ../running_files
 
-scp_loop() {
-    while true; do
-        sleep 5
-        scp -i "$SSH_KEY" -o StrictHostKeyChecking=no "root@$VM_IP:/root/progress_file_$ALGORITHM_NAME.txt" ../running_files/
-    done
-}
+# scp_loop() {
+#     while true; do
+#         sleep 5
+#         scp -i "$SSH_KEY" -o StrictHostKeyChecking=no "root@$VM_IP:/root/progress_file_$ALGORITHM_NAME.txt" ../running_files/
+#     done
+# }
 
-scp_loop &
-SCP_LOOP_PID=$!
+# scp_loop &
+# SCP_LOOP_PID=$!
 
-# Run user code ranking
-ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP "source microVM_venv/bin/activate && \ 
-                /root/microVM_venv/bin/python3 /root/$ALGORITHM_RUNNING "$ALGORITHM_NAME" > running_logs_$ALGORITHM_NAME.txt && \
-                deactivate"
+# # Run user code ranking
+# echo "Running user's algorithm..."
+# ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP "source microVM_venv/bin/activate && \ 
+#                 /root/microVM_venv/bin/python3 /root/$ALGORITHM_RUNNING "$ALGORITHM_NAME" > running_logs_$ALGORITHM_NAME.txt && \
+#                 deactivate"
 
-# wait for the last progress_file.txt update
-sleep 6
+# # wait for the last progress_file.txt update
+# sleep 6
 
-# Zatrzymanie procesu pętli po zakończeniu run user code ranking
-kill $SCP_LOOP_PID
+# # Zatrzymanie procesu pętli po zakończeniu run user code ranking
+# kill $SCP_LOOP_PID
 
-# Dodatkowe sprawdzenie, czy proces został zakończony
-wait $SCP_LOOP_PID 2>/dev/null
+# # Dodatkowe sprawdzenie, czy proces został zakończony
+# wait $SCP_LOOP_PID 2>/dev/null
 
-ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP "ls"
+# ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP "ls"
 
-# Copy the results of the ranking from microVM to the host
-scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/running_logs_$ALGORITHM_NAME.txt ../running_files/
-scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/running_results_$ALGORITHM_NAME.json ../running_files/
+# # Copy the results of the ranking from microVM to the host
+# scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/running_logs_$ALGORITHM_NAME.txt ../running_files/
+# scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/running_results_$ALGORITHM_NAME.json ../running_files/
 
-# Kill the microVM
-ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP 'reboot'
+# # Kill the microVM
+# ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP 'reboot'
 
-sudo rm -f $FIRECRACKER_SOCKET
+# sudo rm -f $FIRECRACKER_SOCKET
