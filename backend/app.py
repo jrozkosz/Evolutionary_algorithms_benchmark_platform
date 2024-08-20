@@ -1,7 +1,7 @@
 from flask import Flask, request, abort, jsonify, session, Response, make_response
 from flask_bcrypt import Bcrypt
 from models import db, Migrate, User, Algorithm, export_json_cec_data, AlgorithmRunningResults, WallInformation
-from backend.microVM.not_used.ranking_calculator import RankingCalculator
+from ranking_calculator import RankingCalculator
 from config import ApplicationConfig
 from flask_session import Session
 from flask_cors import CORS, cross_origin
