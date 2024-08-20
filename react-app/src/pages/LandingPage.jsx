@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import httpClient from "../httpClient";
 import Layout from "./Layout";
 import { useOnMountUnsafe } from "../OnMountUnsafe";

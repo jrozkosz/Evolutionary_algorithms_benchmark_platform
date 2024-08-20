@@ -43,7 +43,7 @@ function AdminPanelPage() {
 
     const addInfoText = async () => {
         try {
-            const resp = await httpClient.post("//localhost:5000/add_info", {
+            await httpClient.post("//localhost:5000/add_info", {
                 infoText,
                 isCrucial
             });
@@ -60,7 +60,7 @@ function AdminPanelPage() {
 
     const deleteUser = async (user_id) => {
         try {
-            const resp = await httpClient.post("//localhost:5000/delete_user", {
+            await httpClient.post("//localhost:5000/delete_user", {
                 "user_id": user_id
             });
             setUsers(users.filter(user => user.id !== user_id));

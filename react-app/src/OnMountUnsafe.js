@@ -5,8 +5,8 @@ export function useOnMountUnsafe(effect) {
 
   useEffect(() => {
     if (!initialized.current) {
-      initialized.current = true
-      effect()
+      initialized.current = true;
+      effect();
     }
-  }, [])
+  }, [effect]);
 }

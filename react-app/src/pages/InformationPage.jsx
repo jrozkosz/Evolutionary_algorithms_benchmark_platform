@@ -43,7 +43,7 @@ function InformationPage() {
 
     const deleteInformation = async (info_id) => {
         try {
-            const resp = await httpClient.post("//localhost:5000/delete_info", {
+            await httpClient.post("//localhost:5000/delete_info", {
                 info_id
             });
             setTexts(texts.filter(text => text.id !== info_id));

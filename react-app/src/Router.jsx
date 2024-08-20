@@ -6,7 +6,6 @@ import NotFound from "./pages/NotFound";
 import RegisterPage from "./pages/RegisterPage";
 import SendingCodePage from "./pages/SendingCodePage";
 import ConfirmEmailPage from "./pages/ConfirmEmail";
-import AlgorithmRunningProgressPage from "./not_used/AlgorithmRunningProgressPage";
 import AlgorithmsRankingsPage from "./pages/AlgorithmsRankingsPage";
 import InformationPage from "./pages/InformationPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
