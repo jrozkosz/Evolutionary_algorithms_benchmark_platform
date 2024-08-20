@@ -1,3 +1,5 @@
+# ZNALAZLEM NIEDOCIAGNIECIA, CHWILKA I POPRAWIAM
+
 # ranking_algorithms
 A website for ranking evolutionary algorithms uploaded by users
 
