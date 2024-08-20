@@ -20,10 +20,10 @@ sudo setfacl -m u:${USER}:rw /dev/kvm
 [ $(stat -c "%G" /dev/kvm) = kvm ] && sudo usermod -aG kvm ${USER} \
 && echo "Access granted."
 
-# 3. Giving execution rights to all the scripts
+# 2. Giving execution rights to all the scripts
 chmod +x *.sh
 
-# Getting a Firecracker, rootfs and Guest Kernel Image
+# 3. Getting a Firecracker, rootfs and Guest Kernel Image
 sudo ./install_firecracker_and_others.sh
 
 ### Now it is ready and microVM can be successfully launched by backend server BUT
