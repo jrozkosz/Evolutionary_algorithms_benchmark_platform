@@ -7,7 +7,7 @@ redis
 flask-cors
 docker
 mysql-connector-python
-pymsql
+pymysql
 numpy
 bandit
 flask-mail
