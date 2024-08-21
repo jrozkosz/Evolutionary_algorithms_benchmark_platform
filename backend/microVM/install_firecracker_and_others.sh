@@ -16,9 +16,11 @@ wget https://s3.amazonaws.com/spec.ccfc.min/firecracker-ci/v1.9/${ARCH}/ubuntu-2
 chmod 400 ./ubuntu-22.04.id_rsa
 
 ## Resize the rootfs memory
+echo "Resizing rootfs memory..."
 sudo ./resize_rfs_memory.sh
 
 ## Install in the rootfs python virtual environment with all the necessary libraries
+echo "Installing python venv in rootfs..."
 sudo ./extend_rootfs.sh
 
 # Getting a Firecracker Binary

@@ -26,6 +26,7 @@ sudo ./run_app.sh <br />
 sudo apt update <br />
 sudo apt install mysql-server <br />
 sudo mysql_secure_installation <br />
+*here you can set your root password, I've successfully checked it* <br />
 <br />
 password of a mysql db root has to be set in /backend/.env file
 
@@ -42,9 +43,24 @@ sudo apt install redis-server <br />
 ### starting redis
 sudo systemctl start redis.service <br />
 
+### checking redis state
+systemctl status redis.service
+*● redis-server.service - Advanced key-value store* <br />
+     *Loaded: loaded (/lib/systemd/system/**redis-server.service**; enabled; vendor >* <br />
+     *Active: active (running) since Mon 2024-08-19 17:52:10 CEST; 1 day 15h ago*
+
 ### enabling autostart
-sudo systemctl enable redis.service <br />
+sudo systemctl enable redis-server.service <br />
 
 
 ## setup sandbox environment
 there is a Readme file in /backend/microVM directory containing the instructions
+
+
+## important information
+admin user passes: <br />
+email: 'admin' <br />
+password: 'admin' <br />
+
+examplary evolutionary algorithm with required interface is located in: /backend/algorithm.py
+

@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# Required packages
+REQUIRED_PKGS="qemu-utils util-linux e2fsprogs"
+
+# Check for missing packages and install them
+echo "Installing missing packages..."
+for pkg in $REQUIRED_PKGS; do
+    if ! dpkg -l | grep -qw $pkg; then
+        echo "Installing $pkg..."
+        sudo apt-get install -y $pkg
+    fi
+done
+
 # Set the new size for the image
 NEW_SIZE="1G"
 IMAGE_NAME="ubuntu-22.04.ext4"
