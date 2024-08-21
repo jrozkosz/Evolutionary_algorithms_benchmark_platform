@@ -78,7 +78,6 @@ class CECfunctions:
   # @staticmethod
   def count_calls(func):
     def wrapper(self, *args, **kwargs):
-        # print(f"Function {func.__name__} has been called {self.call_count} times.")
         if func.__name__ == self.functions_dict[self.function_to_call]:
           self.call_count += 1
           if self.call_count > self.max_call_count:
