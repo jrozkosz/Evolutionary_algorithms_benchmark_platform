@@ -102,6 +102,9 @@ function AlgorithmsRankingsPage() {
                             <th>Username</th>
                             <th>Average error</th>
                             <th>Median error</th>
+                            <th>Std deviation error</th>
+                            <th>Best error</th>
+                            <th>Worst error</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -110,6 +113,9 @@ function AlgorithmsRankingsPage() {
                                 <td>{entry.username}</td>
                                 <td>{entry.average}</td>
                                 <td>{entry.median}</td>
+                                <td>{entry.std_dev}</td>
+                                <td>{entry.best}</td>
+                                <td>{entry.worst}</td>
                             </tr>
                         ))}
                     </tbody>

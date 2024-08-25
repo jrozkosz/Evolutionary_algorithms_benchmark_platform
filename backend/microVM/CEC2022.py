@@ -751,7 +751,7 @@ class CECfunctions:
       # f[i] = 0.0
     
     # stopping algorithm execution when error reaches 10*(-8)
-    if abs(ff - self.get_function_min(self.function_to_call)) < 1e-8:
+    if abs(ff - self.get_function_min(self.function_to_call)) < 10e-8:
       raise FuncCallsLimitReachedException
     return ff
     

@@ -46,26 +46,37 @@ class Algorithm(db.Model):
     running_progress = db.Column(db.Float, default=0.0)
     microVM_IP_addr = db.Column(db.String(15), nullable=True)
     
-    cec_score = db.Column(db.Float, nullable=True)
-    proposed_score = db.Column(db.Float, nullable=True)
-    proposed_optimum_factor = db.Column(db.Float, nullable=True)
-    proposed_thresholds_factor = db.Column(db.Float, nullable=True)
-    proposed_budget_factor = db.Column(db.Float, nullable=True)
-    classic_score_average = db.Column(db.Float, nullable=True)
-    classic_score_median = db.Column(db.Float, nullable=True)
-    
+    cec_results_id = db.Column(db.String(32))
+    proposed_results_id = db.Column(db.String(32))
+    classic_results_id = db.Column(db.String(32))
+
+class CECResults(db.Model):
+    __tablename__ = "cec_results"
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    score = db.Column(db.Float, nullable=True)
+
+class ProposedResults(db.Model):
+    __tablename__ = "proposed_results"
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    score = db.Column(db.Float, nullable=True)
+    optimum_factor = db.Column(db.Float, nullable=True)
+    thresholds_factor = db.Column(db.Float, nullable=True)
+    budget_factor = db.Column(db.Float, nullable=True)
+
+class ClassicResults(db.Model):
+    __tablename__ = "classic_results"
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    average = db.Column(db.Float, nullable=True)
+    median = db.Column(db.Float, nullable=True)
+    std_dev = db.Column(db.Float, nullable=True)
+    best_one = db.Column(db.Float, nullable=True)
+    worst_one = db.Column(db.Float, nullable=True)
 
 class AlgorithmRunningResults(db.Model):
-    __tablename__ = "AlgorithmRunningResults"
+    __tablename__ = "algorithm_running_results"
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     user_id = db.Column(db.String(32), unique=True, nullable=False)
     json_data = db.Column(db.JSON, nullable=False)
-
-class CurrentlyRunningAlgorithm(db.Model):
-    __tablename__ = "currently_running_algorithms"
-    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
-    algorithm_name = db.Column(db.String(345), unique=True, nullable=False)
-    microVM_IP_addr = db.Column(db.String(15), nullable=False)
     
     
 def export_json_cec_data(file_path):

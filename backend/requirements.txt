@@ -13,3 +13,5 @@ bandit
 flask-mail
 itsdangerous
 flask_migrate
+pytest
+pytest-flask

@@ -1,13 +1,10 @@
 from flask import Flask, request, abort, jsonify, session, Response, make_response
 from flask_bcrypt import Bcrypt
-from models import db, Migrate, User, Algorithm, export_json_cec_data, AlgorithmRunningResults, WallInformation
+from models import db, Migrate, User, Algorithm, export_json_cec_data, AlgorithmRunningResults, WallInformation, CECResults, ProposedResults, ClassicResults
 from ranking_calculator import RankingCalculator
 from config import ApplicationConfig
 from flask_session import Session
 from flask_cors import CORS, cross_origin
-import docker
-import time
-import threading
 from conf_token import confirm_token
 from conf_email import send_confirmation_email
 from flask_mail import Mail
@@ -217,11 +214,7 @@ def calculate_rankings(runningResults, currentAlgorithm, session):
     algRunningResults = session.query(AlgorithmRunningResults).all()
     all_data = {}
     for algorithm in algRunningResults:
-        # alg_data = json.load(algorithm.json_data)
         all_data.update({f"{algorithm.user_id}": algorithm.json_data})
-        # all_data[algorithm.user_id] = algorithm.json_data
-    print("\n ALL DATA \n")
-    print(all_data)
 
     rankingCalc = RankingCalculator()
     
@@ -229,47 +222,57 @@ def calculate_rankings(runningResults, currentAlgorithm, session):
     print("\n\n\n\n CEC SCORE: ", cec_score, "\n\n\n\n")
     for alg in cec_score:
         alg_to_update = session.query(Algorithm).filter_by(user_id=alg).first()
-        alg_to_update.cec_score = cec_score[alg]
-        session.commit()
+        if alg_to_update.cec_results_id not in (None, ''):
+            results_to_update = session.query(CECResults).filter_by(id=alg_to_update.cec_results_id).first()
+            results_to_update.score = cec_score[alg]
+        else:
+            results_to_update = CECResults(score=cec_score[alg])
+            session.add(results_to_update)
+            session.commit()
+            alg_to_update.cec_results_id = results_to_update.id
+            session.commit()
     
     # proposed
     proposed_score = rankingCalc.proposed_ranking_method(runningResults.json_data) # dict
     print("\n\n\n\n PROPOSED SCORE: ", proposed_score, "\n\n\n\n")
-    currentAlgorithm.proposed_score = proposed_score['final_score']
-    currentAlgorithm.proposed_optimum_factor = proposed_score['optimum']
-    currentAlgorithm.proposed_thresholds_factor = proposed_score['threshold']
-    currentAlgorithm.proposed_budget_factor = proposed_score['budget']
+    proposed_results = ProposedResults(score=proposed_score['final_score'], optimum_factor=proposed_score['optimum'],
+                                       thresholds_factor = proposed_score['threshold'], budget_factor=proposed_score['budget'])
+    session.add(proposed_results)
+    session.commit()
+    currentAlgorithm.proposed_results_id = proposed_results.id
     session.commit()
     
     # classic
-    average_error, median_error = rankingCalc.classic_ranking_method(runningResults.json_data)
-    print("\n\n\n\n Classic SCORE: ", average_error, median_error, "\n\n\n\n")
-    currentAlgorithm.classic_score_average = average_error
-    currentAlgorithm.classic_score_median = median_error
+    average_error, median_error, std_dev_error, best_error, worst_error = rankingCalc.classic_ranking_method(runningResults.json_data)
+    print("\n\n\n\n Classic SCORE: ", average_error, median_error, std_dev_error, best_error, worst_error, "\n\n\n\n")
+    classic_results = ClassicResults(average=average_error, median=median_error, std_dev=std_dev_error, 
+                                      best_one=best_error, worst_one=worst_error)
+    session.add(classic_results)
     session.commit()
-
+    currentAlgorithm.classic_results_id = classic_results.id
+    session.commit()
 
 @app.route("/algorithms_rankings", methods=["GET"])
 def display_rankings():    
     algRunningResults = AlgorithmRunningResults.query.all()
     print("\n\n ALG RUN RESULTS \n\n")
     print(algRunningResults)
-    for alg in algRunningResults:
-        print(alg)
-        print(alg.json_data)
-    
-    finished_algorithms = Algorithm.query.filter_by(finished=True).all()
     
     data = {'cec_ranking': [], 'proposed_ranking': [], 'classic_ranking': []}
     
+    finished_algorithms = Algorithm.query.filter_by(finished=True).all()
     if finished_algorithms is not None:
         for algorithm in finished_algorithms:
-            print("\n ALGORITHMS CEC SCORE: ", algorithm.cec_score, "\n")
+            # print("\n ALGORITHMS CEC SCORE: ", algorithm.cec_score, "\n")
             user = User.query.filter_by(id=algorithm.user_id).first()
-            data['cec_ranking'].append({'username': user.username, 'score': algorithm.cec_score})
-            data['proposed_ranking'].append({'username': user.username, 'score': algorithm.proposed_score, 'optimum': algorithm.proposed_optimum_factor, 
-                                            'threshold': algorithm.proposed_thresholds_factor, 'budget': algorithm.proposed_budget_factor})
-            data['classic_ranking'].append({'username': user.username, 'average': algorithm.classic_score_average, 'median': algorithm.classic_score_median})
+            cec_results = CECResults.query.filter_by(id=algorithm.cec_results_id).first()
+            proposed_results = ProposedResults.query.filter_by(id=algorithm.proposed_results_id).first()
+            classic_results = ClassicResults.query.filter_by(id=algorithm.classic_results_id).first()
+            data['cec_ranking'].append({'username': user.username, 'score': cec_results.score})
+            data['proposed_ranking'].append({'username': user.username, 'score': proposed_results.score, 'optimum': proposed_results.optimum_factor, 
+                                            'threshold': proposed_results.thresholds_factor, 'budget': proposed_results.budget_factor})
+            data['classic_ranking'].append({'username': user.username, 'average': classic_results.average, 'median': classic_results.median,
+                                            'std_dev': classic_results.std_dev, 'best': classic_results.best_one, 'worst': classic_results.worst_one})
 
         data['cec_ranking'].sort(key=lambda x: x['score'], reverse=True)
         data['proposed_ranking'].sort(key=lambda x: x['score'], reverse=True)
@@ -306,6 +309,13 @@ def display_progress():
 
 @app.route("/upload", methods=["POST"])
 def upload_file():
+    if 'file' not in request.files:
+        return 'No file in a request', 400
+
+    file = request.files['file']
+    if file.filename == '':
+        return 'Empty file name', 400
+    
     user_id = session.get("user_id")
     alreadyUploadedAlgorithm = Algorithm.query.filter_by(user_id=user_id).first()
     if alreadyUploadedAlgorithm is not None:
@@ -314,13 +324,6 @@ def upload_file():
         else:
             db.session.delete(alreadyUploadedAlgorithm)
             db.session.commit()
-    
-    if 'file' not in request.files:
-        return 'No file in a request', 400
-
-    file = request.files['file']
-    if file.filename == '':
-        return 'Empty file name', 400
 
     file.save(f"microVM/algorithm_{user_id}.py")
     try:  

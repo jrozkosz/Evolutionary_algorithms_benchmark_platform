@@ -10,6 +10,12 @@ class RankingCalculator:
         self.dimensions = [10, 20]
         self.rand_seed = 999
         self.runs = 10
+    
+    def set_parameters(self, functions, max_call_count, dimensions, runs):
+        self.functions = functions
+        self.max_call_count = max_call_count
+        self.dimensions = dimensions
+        self.runs = runs
             
     def cec_ranking_method(self, data_file_all_algorithms):
         data = data_file_all_algorithms
@@ -21,7 +27,6 @@ class RankingCalculator:
                 for alg in data:
                     # alg_results = [(alg, float(res)) for res in (data[alg][f"function_{fun}"][f"dim_{dim}"]).split(',')]
                     alg_results = [(alg, (data[alg][f"function_{fun}"][f"dim_{dim}"][f"trial_{run_num}"])) for run_num in range(self.runs)]
-                    print("ALG_RESULTS: ", alg_results)
                     all_algs_fun_trials.extend(alg_results)
                 
                 # calculating algorithms ratings
@@ -67,7 +72,7 @@ class RankingCalculator:
                     # alg_results = [(alg, float(res)) for res in (data[alg][f"function_{fun}"][f"dim_{dim}"]).split(',')]
                     results = data[f"function_{fun}"][f"dim_{dim}"][f"trial_{r}"]
                     error, calls_count = results            
-                    if error <= 1e-8:  #1e8:
+                    if error <= 10e-8:  #1e8:
                         found_optimum += 1
                         found_threshold += len(threshold)
                         budget_left += max_fes - calls_count
@@ -82,7 +87,7 @@ class RankingCalculator:
         print("Threshold percent: ", threshold_percent)
         budget_left_percent = budget_left / all_budget
         print("Budget percent: ", budget_left_percent)
-        final_score = (g_optimum_percent + score_weight*threshold_percent + (score_weight**2)*budget_left_percent) / 3
+        final_score = (g_optimum_percent + score_weight*threshold_percent + (score_weight**2)*budget_left_percent)
         print(final_score)
         proposed_scores = {"final_score": final_score, "optimum": g_optimum_percent, "threshold": threshold_percent, "budget": budget_left_percent}
 
@@ -115,12 +120,17 @@ class RankingCalculator:
                     results = data[f"function_{fun}"][f"dim_{dim}"][f"trial_{r}"]
                     error, calls_count = results   
                     errors.append(error)
-                    
+        
+        print("errors: ", errors)
         avg_error = np.sum(errors) / all_runs
         print(avg_error)
         median_error = np.median(errors)
         print(median_error)
-        return avg_error, median_error
+        std_dev = np.std(errors)
+        print(std_dev)
+        best_one = np.min(errors)
+        worst_one = np.max(errors)
+        return avg_error, median_error, std_dev, best_one, worst_one
 
 
 # if __name__ == "__main__":

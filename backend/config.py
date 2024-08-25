@@ -36,3 +36,7 @@ class ApplicationConfig:
     # MAIL_PASSWORD = os.environ["EMAIL_PASSWORD"]
 
     # CORS_HEADERS = 'Content-Type'
+    
+class TestConfig(ApplicationConfig):
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+    TESTING = True
