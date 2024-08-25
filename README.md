@@ -56,6 +56,10 @@ sudo systemctl enable redis-server.service <br />
 ## setup sandbox environment
 there is a Readme file in /backend/microVM directory containing the instructions
 
+## run tests
+(from base directory)
+PYTHONPATH=./backend pytest
+
 
 ## important information
 admin user passes: <br />
