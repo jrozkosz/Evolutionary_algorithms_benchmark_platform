@@ -23,6 +23,7 @@ class User(db.Model):
 class WallInformation(db.Model):
     __tablename__ = "wall_information"
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    admin_id = db.Column(db.String(32), nullable=False)
     text = db.Column(LONGTEXT, nullable=False)
     added_date = db.Column(db.DateTime, default=datetime.now, nullable=False)
     is_crucial = db.Column(db.Boolean, default=False, nullable=False)
