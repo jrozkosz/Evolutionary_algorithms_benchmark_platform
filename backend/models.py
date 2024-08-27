@@ -23,16 +23,10 @@ class User(db.Model):
 class WallInformation(db.Model):
     __tablename__ = "wall_information"
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    admin_id = db.Column(db.String(32), nullable=False)
     text = db.Column(LONGTEXT, nullable=False)
     added_date = db.Column(db.DateTime, default=datetime.now, nullable=False)
     is_crucial = db.Column(db.Boolean, default=False, nullable=False)
-    
-# class Contest(db.Model):
-#     __tablename___ = "contest"
-#     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
-#     starting_date = db.Column(db.DateTime, nullable=False)
-#     ending_date = db.Column(db.DateTime, nullable=False)
-    
 
 class Algorithm(db.Model):
     __tablename__ = "algorithms"
@@ -75,7 +69,7 @@ class ClassicResults(db.Model):
 class AlgorithmRunningResults(db.Model):
     __tablename__ = "algorithm_running_results"
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
-    user_id = db.Column(db.String(32), unique=True, nullable=False)
+    algorithm_id = db.Column(db.String(32), unique=True, nullable=False)
     json_data = db.Column(db.JSON, nullable=False)
     
     
