@@ -58,6 +58,7 @@ function AlgorithmsRankingsPage() {
                     <thead>
                         <tr>
                             <th>Username</th>
+                            <th>Algorithm</th>
                             <th>Score</th>
                         </tr>
                     </thead>
@@ -65,6 +66,7 @@ function AlgorithmsRankingsPage() {
                         {rankings.cec_ranking.map((entry, index) => (
                             <tr key={index}>
                                 <td>{entry.username}</td>
+                                <td>{entry.algorithm}</td>
                                 <td>{entry.score}</td>
                             </tr>
                         ))}
@@ -76,6 +78,7 @@ function AlgorithmsRankingsPage() {
                     <thead>
                         <tr>
                             <th>Username</th>
+                            <th>Algorithm</th>
                             <th>Score</th>
                             <th>Optimum %</th>
                             <th>Thresholds %</th>
@@ -86,6 +89,7 @@ function AlgorithmsRankingsPage() {
                         {rankings.proposed_ranking.map((entry, index) => (
                             <tr key={index}>
                                 <td>{entry.username}</td>
+                                <td>{entry.algorithm}</td>
                                 <td>{entry.score}</td>
                                 <td>{entry.optimum}</td>
                                 <td>{entry.threshold}</td>
@@ -100,6 +104,7 @@ function AlgorithmsRankingsPage() {
                     <thead>
                         <tr>
                             <th>Username</th>
+                            <th>Algorithm</th>
                             <th>Average error</th>
                             <th>Median error</th>
                             <th>Std deviation error</th>
@@ -111,6 +116,7 @@ function AlgorithmsRankingsPage() {
                         {rankings.classic_ranking.map((entry, index) => (
                             <tr key={index}>
                                 <td>{entry.username}</td>
+                                <td>{entry.algorithm}</td>
                                 <td>{entry.average}</td>
                                 <td>{entry.median}</td>
                                 <td>{entry.std_dev}</td>

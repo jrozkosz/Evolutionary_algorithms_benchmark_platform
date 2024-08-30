@@ -10,10 +10,10 @@ class RunningAlgorithm:
         self.call_count = 0
         self.g_optimum = [300, 400, 600, 800, 900, 1800, 2000, 2200, 2300, 2400, 2600, 2700]
         self.functions = [1, 2]
-        self.max_call_count = [2000, 10000]
-        self.dimensions = [10, 20]
+        self.max_call_count = [1000000]
+        self.dimensions = [20]
         self.rand_seed = 999
-        self.runs = 10
+        self.runs = 20
     
     def run_algorithm(self):
         data = {}
@@ -23,7 +23,7 @@ class RunningAlgorithm:
             dim_idx, dim = dim
             CECfuncs.set_max_fes(max_fes)
             for fun_idx, fun in enumerate(self.functions):
-                real_value = CECfuncs.get_function_min(fun-1)
+                real_value = CECfuncs.get_function_min(fun)
                 CECfuncs.config_cec_functions(dim, fun)
                 for r in range(self.runs):
                     print(f"Run number {r}")
@@ -39,6 +39,7 @@ class RunningAlgorithm:
                         print(best_value)
                         CECfuncs.reset_call_count()
                         error = abs(best_value - real_value)
+                        print("error: ", error)
                         # all_algs_fun_trials.append(("Current alg", error))
                         print(e)
                         # saving the new algorithm's results to a file
@@ -68,7 +69,8 @@ class RunningAlgorithm:
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         alg_name = sys.argv[1]
-        module_name = f"algorithm_{alg_name}"
+        # module_name = f"{alg_name}"
+        module_name = "algorithm"
 
         try:
             algorithm_module = importlib.import_module(module_name)

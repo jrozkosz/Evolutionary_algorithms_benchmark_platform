@@ -31,9 +31,9 @@ class WallInformation(db.Model):
 class Algorithm(db.Model):
     __tablename__ = "algorithms"
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
-    # name = db.Column(db.String(345), unique=True, nullable=False)
+    name = db.Column(db.String(345), unique=True, nullable=False)
     # username = db.Column(db.String(345), unique=True, nullable=False)
-    user_id = db.Column(db.String(32), unique=True, nullable=False)
+    user_id = db.Column(db.String(32), nullable=False)
     running = db.Column(db.Boolean, nullable=False, default=False)
     finished = db.Column(db.Boolean, nullable=False, default=False)
     error_occurred = db.Column(db.Boolean, nullable=False, default=False)
@@ -70,6 +70,7 @@ class AlgorithmRunningResults(db.Model):
     __tablename__ = "algorithm_running_results"
     id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
     algorithm_id = db.Column(db.String(32), unique=True, nullable=False)
+    user_id = db.Column(db.String(32), nullable=False)
     json_data = db.Column(db.JSON, nullable=False)
     
     

@@ -27,7 +27,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 with app.app_context():
-    # db.drop_all()
+    db.drop_all()
     db.create_all()
     
     admin_exists = User.query.filter_by(username='admin').first() is not None
@@ -106,13 +106,11 @@ def confirm_email(token):
 
 
 @app.route("/login", methods=["POST"])
-def login_user():    
-    print("\nPOST NUMBER...\n")
+def login_user():
     email = request.json["email"]
     password = request.json["password"]
-
     user = User.query.filter_by(email=email).first()
-
+    
     if user is None:
         return jsonify({"error": "Anauthorized"}), 401
     if not bcrypt.check_password_hash(user.password, password):
@@ -138,7 +136,7 @@ def logout_user():
     return "200"
 
 
-def run_microVM(user_id, IPaddrs_significant_num: int):
+def run_microVM(alg_name, IPaddrs_significant_num: int):
     command = [
             "./launch_microVM.sh",
             f"tap{IPaddrs_significant_num}",
@@ -146,10 +144,10 @@ def run_microVM(user_id, IPaddrs_significant_num: int):
             f"172.16.{IPaddrs_significant_num}.2",
             f"172.16.{IPaddrs_significant_num}.1",
             "./ubuntu-22.04.id_rsa",
-            f"algorithm_{user_id}.py",
+            f"{alg_name}.py",
             "CEC2022.py", 
             "algorithm_running.py",
-            f"{user_id}"
+            f"{alg_name}"
         ]
         
     with open("logs.txt", "w") as log_file:
@@ -163,7 +161,7 @@ def run_microVM(user_id, IPaddrs_significant_num: int):
         
         if result.returncode == 0:
             print("\n\n\n TRYING TO CONNECT DB FROM SEPERATE PROCESS...\n\n\n")
-            currentAlgorithm = session.query(Algorithm).filter_by(user_id=user_id).first()
+            currentAlgorithm = session.query(Algorithm).filter_by(name=alg_name).first()
             currentAlgorithm.running = False
             currentAlgorithm.finished = True
             session.commit()
@@ -177,7 +175,7 @@ def run_microVM(user_id, IPaddrs_significant_num: int):
             
             print("\n\n\n OKEY, DONE! \n\n\n")
         else:
-            currentAlgorithm = session.query(Algorithm).filter_by(user_id=user_id).first()
+            currentAlgorithm = session.query(Algorithm).filter_by(name=alg_name).first()
             currentAlgorithm.error_occurred = True
             currentAlgorithm.running = False
             session.commit()
@@ -190,22 +188,22 @@ def run_microVM(user_id, IPaddrs_significant_num: int):
 
 
 def update_algorithm_running_results(currentAlgorithm, session):
-    with open(f'running_files/running_results_{currentAlgorithm.user_id}.json', 'r') as file:
+    with open(f'running_files/running_results_{currentAlgorithm.name}.json', 'r') as file:
         json_data = json.load(file)
 
-    algRunningResults = AlgorithmRunningResults(user_id=currentAlgorithm.user_id, 
+    algRunningResults = AlgorithmRunningResults(algorithm_id=currentAlgorithm.id, user_id=currentAlgorithm.user_id,
                                                 json_data=json_data)
     session.add(algRunningResults)
     session.commit()
     
-    with open(f'running_files/progress_file_{currentAlgorithm.user_id}.txt', 'r') as f:
+    with open(f'running_files/progress_file_{currentAlgorithm.name}.txt', 'r') as f:
         progress = float(f.read())
         currentAlgorithm.running_progress = progress
         session.commit()
     
-    # os.remove(f'running_files/running_results_{currentAlgorithm.user_id}.json')
-    # os.remove(f'running_files/progress_file_{currentAlgorithm.user_id}.txt')
-    # os.remove(f'running_files/running_logs_{currentAlgorithm.user_id}.txt')
+    # os.remove(f'running_files/running_results_{currentAlgorithm.name}.json')
+    # os.remove(f'running_files/progress_file_{currentAlgorithm.name}.txt')
+    # os.remove(f'running_files/running_logs_{currentAlgorithm.name}.txt')
     
     return algRunningResults
 
@@ -214,14 +212,15 @@ def calculate_rankings(runningResults, currentAlgorithm, session):
     algRunningResults = session.query(AlgorithmRunningResults).all()
     all_data = {}
     for algorithm in algRunningResults:
-        all_data.update({f"{algorithm.user_id}": algorithm.json_data})
-
+        print("\nalgorithm: ", algorithm.algorithm_id)
+        all_data.update({f"{algorithm.algorithm_id}": algorithm.json_data})
+    print(all_data)
     rankingCalc = RankingCalculator()
     
     cec_score = rankingCalc.cec_ranking_method(all_data) # dict
     print("\n\n\n\n CEC SCORE: ", cec_score, "\n\n\n\n")
     for alg in cec_score:
-        alg_to_update = session.query(Algorithm).filter_by(user_id=alg).first()
+        alg_to_update = session.query(Algorithm).filter_by(id=alg).first()
         if alg_to_update.cec_results_id not in (None, ''):
             results_to_update = session.query(CECResults).filter_by(id=alg_to_update.cec_results_id).first()
             results_to_update.score = cec_score[alg]
@@ -268,10 +267,10 @@ def display_rankings():
             cec_results = CECResults.query.filter_by(id=algorithm.cec_results_id).first()
             proposed_results = ProposedResults.query.filter_by(id=algorithm.proposed_results_id).first()
             classic_results = ClassicResults.query.filter_by(id=algorithm.classic_results_id).first()
-            data['cec_ranking'].append({'username': user.username, 'score': cec_results.score})
-            data['proposed_ranking'].append({'username': user.username, 'score': proposed_results.score, 'optimum': proposed_results.optimum_factor, 
+            data['cec_ranking'].append({'username': user.username, 'algorithm': algorithm.name, 'score': cec_results.score})
+            data['proposed_ranking'].append({'username': user.username, 'algorithm': algorithm.name, 'score': proposed_results.score, 'optimum': proposed_results.optimum_factor, 
                                             'threshold': proposed_results.thresholds_factor, 'budget': proposed_results.budget_factor})
-            data['classic_ranking'].append({'username': user.username, 'average': classic_results.average, 'median': classic_results.median,
+            data['classic_ranking'].append({'username': user.username, 'algorithm': algorithm.name, 'average': classic_results.average, 'median': classic_results.median,
                                             'std_dev': classic_results.std_dev, 'best': classic_results.best_one, 'worst': classic_results.worst_one})
 
         data['cec_ranking'].sort(key=lambda x: x['score'], reverse=True)
@@ -283,28 +282,33 @@ def display_rankings():
 
 
 @app.route("/upload/progress", methods=["GET"])
-def display_progress():    
-    user_id = session.get("user_id")
-    algorithm = Algorithm.query.filter_by(user_id=user_id).first()
-    if algorithm is not None:
-        if algorithm.error_occurred:
-            return jsonify({'error': "An error occurred when processing the algorithm"}), 400
-        if algorithm.finished:
-            return jsonify({'progress': 100})
-        elif algorithm.running:
-            # microVM_IP_addr = algorithm.microVM_IP_addr
+def display_progress():
+    try:  
+        user_id = session.get("user_id")
+        algorithm = Algorithm.query.filter_by(user_id=user_id).first()
+        if algorithm is not None:
+            if algorithm.error_occurred:
+                return jsonify({'error': "An error occurred when processing the algorithm"}), 400
+            if algorithm.finished:
+                return jsonify({'progress': 100})
+            elif algorithm.running:
+                # microVM_IP_addr = algorithm.microVM_IP_addr
+                
+                # subprocess.run(["scp", "-i", "/microVM/ubuntu-22.04.id_rsa", "-o", "StrictHostKeyChecking=no", f"root@{microVM_IP_addr}:/root/progress_file.txt", "."]) 
+                try:
+                    with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
+                        progress = float(f.read())
+                        algorithm.running_progress = progress
+                        db.session.commit()
+                        return jsonify({"progress": progress}), 200
+                except Exception:
+                    return jsonify({"progress": 0}), 200
             
-            # subprocess.run(["scp", "-i", "/microVM/ubuntu-22.04.id_rsa", "-o", "StrictHostKeyChecking=no", f"root@{microVM_IP_addr}:/root/progress_file.txt", "."]) 
-            try:
-                with open(f'running_files/progress_file_{user_id}.txt', 'r') as f:
-                    progress = float(f.read())
-                    algorithm.running_progress = progress
-                    db.session.commit()
-                    return jsonify({"progress": progress}), 200
-            except Exception:
-                return jsonify({"progress": 0})
-            
-    return jsonify({"error": "Algorithm has not yet been uploaded"}), 400
+        return jsonify({"error": "Algorithm has not yet been uploaded"}), 400
+    
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": "An error occurred while deleting user", "details": str(e)}), 500
         
 
 @app.route("/upload", methods=["POST"])
@@ -316,23 +320,20 @@ def upload_file():
     if file.filename == '':
         return 'Empty file name', 400
     
-    user_id = session.get("user_id")
-    alreadyUploadedAlgorithm = Algorithm.query.filter_by(user_id=user_id).first()
-    if alreadyUploadedAlgorithm is not None:
-        if not alreadyUploadedAlgorithm.error_occurred:
-            return jsonify({"error": "Algorithm already uploaded"}), 403
-        else:
-            db.session.delete(alreadyUploadedAlgorithm)
-            db.session.commit()
-
-    file.save(f"microVM/algorithm_{user_id}.py")
-    try:  
+    # alreadyUploadedAlgorithm = Algorithm.query.filter_by(user_id=user_id).first()
+    # if alreadyUploadedAlgorithm is not None:
+    #     if not alreadyUploadedAlgorithm.error_occurred:
+    #         return jsonify({"error": "Algorithm already uploaded"}), 403
+    #     else:
+    #         db.session.delete(alreadyUploadedAlgorithm)
+    #         db.session.commit()
+    try:
         runningAlgorithms = Algorithm.query.filter_by(running=True).all()
         print(runningAlgorithms)
         if len(runningAlgorithms) > 0:
-            print(runningAlgorithms[0].username)
-            print(runningAlgorithms[0].microVM_IP_addr)
-            print([algorithm.microVM_IP_addr for algorithm in runningAlgorithms])
+            # print(runningAlgorithms[0].username)
+            # print(runningAlgorithms[0].microVM_IP_addr)
+            # print([algorithm.microVM_IP_addr for algorithm in runningAlgorithms])
             IPaddrs_being_used = [algorithm.microVM_IP_addr for algorithm in runningAlgorithms]
             IPaddrs_being_used.sort()
             print(IPaddrs_being_used)
@@ -342,15 +343,21 @@ def upload_file():
         print(IPaddrs_significant_num)
         print("\n4\n")
         
+        
+        algorithms_uploaded = Algorithm.query.all()
+        user_id = session.get("user_id")
+        algorithm_name = f"{file.filename[:-3]}_{len(algorithms_uploaded)+1}"
+        file.save(f"microVM/{algorithm_name}.py")
+        
         if not os.path.exists('running_files'):
             os.makedirs('running_files')
-        export_json_cec_data(f'running_files/running_results_{user_id}.json')
+        export_json_cec_data(f'running_files/running_results_{algorithm_name}.json')
         
-        currentAlgorithm = Algorithm(user_id=user_id, running=True, microVM_IP_addr=f"172.16.{IPaddrs_significant_num}.2")
+        currentAlgorithm = Algorithm(user_id=user_id, name=algorithm_name, running=True, microVM_IP_addr=f"172.16.{IPaddrs_significant_num}.2")
         db.session.add(currentAlgorithm)
         db.session.commit()
         
-        process = multiprocessing.Process(target=run_microVM, args=(user_id, IPaddrs_significant_num,))
+        process = multiprocessing.Process(target=run_microVM, args=(algorithm_name, IPaddrs_significant_num,))
         process.start()
         
         return jsonify({"message": "Sandbox created successfully."}), 200
@@ -381,7 +388,8 @@ def add_info():
             return jsonify({"error": "Text is empty"}), 400
         
         is_crucial = request.json["isCrucial"]
-        new_info = WallInformation(text=text, is_crucial=is_crucial)
+        admin_id = session.get("user_id")
+        new_info = WallInformation(text=text, admin_id=admin_id, is_crucial=is_crucial)
         db.session.add(new_info)
         db.session.commit()
         
@@ -419,8 +427,8 @@ def display_users():
             for user in users:
                 if user.is_confirmed:
                     algorithm = Algorithm.query.filter_by(user_id=user.id).first()
-                    if os.path.isfile(f'running_files/progress_file_{user.id}.txt'):
-                        with open(f'running_files/progress_file_{user.id}.txt', 'r') as f:
+                    if os.path.isfile(f'running_files/progress_file_{algorithm.name}.txt'):
+                        with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
                             progress = float(f.read())
                             algorithm.running_progress = progress
                             db.session.commit()

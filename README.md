@@ -58,6 +58,10 @@ there is a Readme file in /backend/microVM directory containing the instructions
 
 ## run tests
 (from base directory)
+cd backend <br />
+source .venv/bin/activate <br />
+(pip install -r requirements.txt *if not done earlier*) <br/ >
+cd .. <br />
 PYTHONPATH=./backend pytest
 
 ## important information

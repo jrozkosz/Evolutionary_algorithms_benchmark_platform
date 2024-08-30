@@ -38,7 +38,7 @@ class RankingCalculator:
                         function_points[sr[0]] = function_points[sr[0]] + len(sorted_results)-idx
                     else:
                         function_points[sr[0]] = len(sorted_results)-idx
-                print("FUNCTION_POINTS: ", function_points)
+                # print("FUNCTION_POINTS: ", function_points)
                 for alg_name in function_points:
                     if alg_name in final_scores:
                         final_scores[alg_name] = final_scores[alg_name] + function_points[alg_name] - self.runs*(self.runs+1)/2
@@ -50,7 +50,7 @@ class RankingCalculator:
                         cec_scores[alg_name] = cec_scores[alg_name] + final_scores[alg_name]
                     else:
                         cec_scores[alg_name] = final_scores[alg_name]
-                    print(f"DIM{dim}", cec_scores[alg_name])
+                    # print(f"DIM{dim}", cec_scores[alg_name])
             
         print(cec_scores)
         return cec_scores
