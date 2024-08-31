@@ -6,10 +6,10 @@ class RankingCalculator:
         self.call_count = 0
         self.g_optimum = [300, 400, 600, 800, 900, 1800, 2000, 2200, 2300, 2400, 2600, 2700]
         self.functions = [1, 2]
-        self.max_call_count = [2000, 10000]
+        self.max_call_count = [200000, 1000000]
         self.dimensions = [10, 20]
         self.rand_seed = 999
-        self.runs = 10
+        self.runs = 30
     
     def set_parameters(self, functions, max_call_count, dimensions, runs):
         self.functions = functions
@@ -131,18 +131,3 @@ class RankingCalculator:
         best_one = np.min(errors)
         worst_one = np.max(errors)
         return avg_error, median_error, std_dev, best_one, worst_one
-
-
-# if __name__ == "__main__":
-#     if len(sys.argv) > 1:
-#         alg_name = sys.argv[1]
-#         # host_IP = sys.argv[2]
-#         # ssh_key = sys.argv[3]
-        
-#         RankingCalc = RankingCalculator(alg_name)
-#         RankingCalc.run_algorithm()
-#         RankingCalc.cec_ranking_method()
-#         RankingCalc.proposed_ranking_method()
-#         RankingCalc.classic_ranking_method()
-#     else:
-#         print("No name provided.")

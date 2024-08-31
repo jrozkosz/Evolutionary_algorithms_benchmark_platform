@@ -7,6 +7,7 @@ DIMENSIONALITY = 10
 
 def evolutionary_algorithm(obj_function, dimension, rand_seed, best_individual):
     random.seed(rand_seed)
+    np.random.seed(rand_seed)
     # population creation
     pop_size = 30
     pop = np.array([])

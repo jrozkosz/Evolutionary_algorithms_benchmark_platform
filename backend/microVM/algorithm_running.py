@@ -10,10 +10,10 @@ class RunningAlgorithm:
         self.call_count = 0
         self.g_optimum = [300, 400, 600, 800, 900, 1800, 2000, 2200, 2300, 2400, 2600, 2700]
         self.functions = [1, 2]
-        self.max_call_count = [1000000]
-        self.dimensions = [20]
+        self.max_call_count = [200000, 1000000]
+        self.dimensions = [10, 20]
         self.rand_seed = 999
-        self.runs = 20
+        self.runs = 30
     
     def run_algorithm(self):
         data = {}
@@ -62,15 +62,13 @@ class RunningAlgorithm:
             print("CURRENT_STATE: ", current_state)
             progress = int((current_state/all_runs)*100)
             f.write(str(progress))
-        # scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/algorithm_results.json ..
-        # subprocess.run(["scp", "-i", f"{ssh_key}", "-o", "StrictHostKeyChecking=no", f"root@{host_IP}:"]) 
 
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
         alg_name = sys.argv[1]
-        # module_name = f"{alg_name}"
-        module_name = "algorithm"
+        module_name = f"{alg_name}"
+        # module_name = "algorithm"
 
         try:
             algorithm_module = importlib.import_module(module_name)
