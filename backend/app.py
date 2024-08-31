@@ -27,7 +27,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 with app.app_context():
-    db.drop_all()
+    # db.drop_all()
     db.create_all()
     
     admin_exists = User.query.filter_by(username='admin').first() is not None
@@ -41,10 +41,8 @@ mail = Mail(app)
 
 @app.route("/@me")
 def get_current_user():
-    print("\n MEEEEEEEEEEE \n")
     print("Session in @ME: ", session)
     user_id = session.get("user_id")
-    print('\nUSER_ID (@ME): ', user_id)
 
     if user_id is None:
         return jsonify({"error": "Anauthorized"}), 401
@@ -88,7 +86,6 @@ def confirm_email(token):
         email = confirm_token(app, token)
     except:
         return jsonify({"error": "The confirmation link is invalid or has expired."})
-    print("weired...")
     # user = User.query.filter_by(email=email).first_or_404()
     user = User.query.filter_by(email=email).first()
     if user is None:
@@ -97,7 +94,6 @@ def confirm_email(token):
     if user.is_confirmed:
         return jsonify({"info": "Account already confirmed."})
     else:
-        print("CONFIRMING USER...")
         user.is_confirmed = True
         # user.confirmed_on = datetime.datetime.now()
         db.session.add(user)
@@ -116,13 +112,10 @@ def login_user():
     if not bcrypt.check_password_hash(user.password, password):
         return jsonify({"error": "Anauthorized"}), 401
     if not user.is_confirmed:
-        print("INSIDE")
         return jsonify({"error": "The account has not been confirmed."}), 403
     
-    print('\nUSER_ID (logging): ', user.id)
     session["user_id"] = user.id
     session["username"] = user.username
-    print("Session after login:", session)
     
     response = jsonify({
         "id": user.id,
@@ -152,7 +145,6 @@ def run_microVM(alg_name, IPaddrs_significant_num: int):
         
     with open("logs.txt", "w") as log_file:
         result = subprocess.run(command, cwd="microVM", stdout=log_file, stderr=subprocess.STDOUT)
-        print("\n\n\n\n\n\n\n\n\n\n RESULT: ", result.returncode, "\n\n\n\n\n\n\n\n\n\n\n")
     
     try:
         engine = create_engine("mysql+pymysql://root:!Mysql2001@localhost:3306/alg_ranking_db", echo=True)
@@ -160,20 +152,15 @@ def run_microVM(alg_name, IPaddrs_significant_num: int):
         session = Session()
         
         if result.returncode == 0:
-            print("\n\n\n TRYING TO CONNECT DB FROM SEPERATE PROCESS...\n\n\n")
             currentAlgorithm = session.query(Algorithm).filter_by(name=alg_name).first()
             currentAlgorithm.running = False
             currentAlgorithm.finished = True
             session.commit()
-            
-            print("\n\n UPDATING RESULTS \n\n")
+
             algorithmRunningResults = update_algorithm_running_results(currentAlgorithm, session)
             
             # CALCULATE RANKINGS
-            print("\n\n CALC RANKINGS \n\n")
             calculate_rankings(algorithmRunningResults, currentAlgorithm, session)
-            
-            print("\n\n\n OKEY, DONE! \n\n\n")
         else:
             currentAlgorithm = session.query(Algorithm).filter_by(name=alg_name).first()
             currentAlgorithm.error_occurred = True
@@ -212,13 +199,10 @@ def calculate_rankings(runningResults, currentAlgorithm, session):
     algRunningResults = session.query(AlgorithmRunningResults).all()
     all_data = {}
     for algorithm in algRunningResults:
-        print("\nalgorithm: ", algorithm.algorithm_id)
         all_data.update({f"{algorithm.algorithm_id}": algorithm.json_data})
-    print(all_data)
     rankingCalc = RankingCalculator()
     
     cec_score = rankingCalc.cec_ranking_method(all_data) # dict
-    print("\n\n\n\n CEC SCORE: ", cec_score, "\n\n\n\n")
     for alg in cec_score:
         alg_to_update = session.query(Algorithm).filter_by(id=alg).first()
         if alg_to_update.cec_results_id not in (None, ''):
@@ -233,7 +217,6 @@ def calculate_rankings(runningResults, currentAlgorithm, session):
     
     # proposed
     proposed_score = rankingCalc.proposed_ranking_method(runningResults.json_data) # dict
-    print("\n\n\n\n PROPOSED SCORE: ", proposed_score, "\n\n\n\n")
     proposed_results = ProposedResults(score=proposed_score['final_score'], optimum_factor=proposed_score['optimum'],
                                        thresholds_factor = proposed_score['threshold'], budget_factor=proposed_score['budget'])
     session.add(proposed_results)
@@ -243,7 +226,6 @@ def calculate_rankings(runningResults, currentAlgorithm, session):
     
     # classic
     average_error, median_error, std_dev_error, best_error, worst_error = rankingCalc.classic_ranking_method(runningResults.json_data)
-    print("\n\n\n\n Classic SCORE: ", average_error, median_error, std_dev_error, best_error, worst_error, "\n\n\n\n")
     classic_results = ClassicResults(average=average_error, median=median_error, std_dev=std_dev_error, 
                                       best_one=best_error, worst_one=worst_error)
     session.add(classic_results)
@@ -254,15 +236,12 @@ def calculate_rankings(runningResults, currentAlgorithm, session):
 @app.route("/algorithms_rankings", methods=["GET"])
 def display_rankings():    
     algRunningResults = AlgorithmRunningResults.query.all()
-    print("\n\n ALG RUN RESULTS \n\n")
-    print(algRunningResults)
     
     data = {'cec_ranking': [], 'proposed_ranking': [], 'classic_ranking': []}
     
     finished_algorithms = Algorithm.query.filter_by(finished=True).all()
     if finished_algorithms is not None:
         for algorithm in finished_algorithms:
-            # print("\n ALGORITHMS CEC SCORE: ", algorithm.cec_score, "\n")
             user = User.query.filter_by(id=algorithm.user_id).first()
             cec_results = CECResults.query.filter_by(id=algorithm.cec_results_id).first()
             proposed_results = ProposedResults.query.filter_by(id=algorithm.proposed_results_id).first()
@@ -319,30 +298,15 @@ def upload_file():
     file = request.files['file']
     if file.filename == '':
         return 'Empty file name', 400
-    
-    # alreadyUploadedAlgorithm = Algorithm.query.filter_by(user_id=user_id).first()
-    # if alreadyUploadedAlgorithm is not None:
-    #     if not alreadyUploadedAlgorithm.error_occurred:
-    #         return jsonify({"error": "Algorithm already uploaded"}), 403
-    #     else:
-    #         db.session.delete(alreadyUploadedAlgorithm)
-    #         db.session.commit()
+
     try:
         runningAlgorithms = Algorithm.query.filter_by(running=True).all()
-        print(runningAlgorithms)
         if len(runningAlgorithms) > 0:
-            # print(runningAlgorithms[0].username)
-            # print(runningAlgorithms[0].microVM_IP_addr)
-            # print([algorithm.microVM_IP_addr for algorithm in runningAlgorithms])
             IPaddrs_being_used = [algorithm.microVM_IP_addr for algorithm in runningAlgorithms]
             IPaddrs_being_used.sort()
-            print(IPaddrs_being_used)
             IPaddrs_significant_num = int(IPaddrs_being_used[-1].split('.')[-2]) + 1
         else:
-            IPaddrs_significant_num = 1
-        print(IPaddrs_significant_num)
-        print("\n4\n")
-        
+            IPaddrs_significant_num = 1      
         
         algorithms_uploaded = Algorithm.query.all()
         user_id = session.get("user_id")
@@ -362,7 +326,6 @@ def upload_file():
         
         return jsonify({"message": "Sandbox created successfully."}), 200
     except Exception as e:
-        # db.session.delete(runningAlgorithms)
         currentAlgorithm.running = False
         db.session.commit()
         return jsonify({"error": str(e)})
@@ -383,7 +346,6 @@ def display_info():
 def add_info():
     try:
         text = request.json["infoText"]
-        print(text)
         if text == "":
             return jsonify({"error": "Text is empty"}), 400
         

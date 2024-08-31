@@ -33,7 +33,6 @@ class RankingCalculator:
                 sorted_results = sorted(all_algs_fun_trials, key=lambda x: (x[1][0], x[1][1]))
                 function_points = {}
                 for idx, sr in enumerate(sorted_results):
-                    print(sr)
                     if sr[0] in function_points:
                         function_points[sr[0]] = function_points[sr[0]] + len(sorted_results)-idx
                     else:
@@ -44,7 +43,6 @@ class RankingCalculator:
                         final_scores[alg_name] = final_scores[alg_name] + function_points[alg_name] - self.runs*(self.runs+1)/2
                     else:
                         final_scores[alg_name] = function_points[alg_name] - self.runs*(self.runs+1)/2
-                    print(final_scores[alg_name])
                 for alg_name in final_scores:
                     if alg_name in cec_scores:
                         cec_scores[alg_name] = cec_scores[alg_name] + final_scores[alg_name]
@@ -52,7 +50,7 @@ class RankingCalculator:
                         cec_scores[alg_name] = final_scores[alg_name]
                     # print(f"DIM{dim}", cec_scores[alg_name])
             
-        print(cec_scores)
+        # print(cec_scores)
         return cec_scores
 
     def proposed_ranking_method(self, data_file):
@@ -78,7 +76,6 @@ class RankingCalculator:
                         budget_left += max_fes - calls_count
                     else:
                         thresholds_reached = self.find_no_of_thresholds_reached(threshold, error)
-                        print("THRESHOLDS REACHED: ", thresholds_reached)
                         found_threshold += thresholds_reached
         
         g_optimum_percent = found_optimum / all_runs
@@ -121,7 +118,7 @@ class RankingCalculator:
                     error, calls_count = results   
                     errors.append(error)
         
-        print("errors: ", errors)
+        # print("errors: ", errors)
         avg_error = np.sum(errors) / all_runs
         print(avg_error)
         median_error = np.median(errors)
