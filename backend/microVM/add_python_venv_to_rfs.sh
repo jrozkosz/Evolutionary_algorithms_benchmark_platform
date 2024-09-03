@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ROOTFS="ubuntu-22.04.ext4"
+VENV_DIR="microVM_venv"
 
 # Mount the rootfs image
 echo "Mounting the rootfs image..."
