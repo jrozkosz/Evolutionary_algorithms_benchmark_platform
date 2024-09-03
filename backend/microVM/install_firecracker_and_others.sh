@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Downloading a rootfs and guest kernel image
 ARCH="$(uname -m)"
 
