@@ -40,14 +40,14 @@ fi
 echo "Copying python virtual environment to the rootfs..."
 if ! sudo cp -r "$VENV_DIR"/ /mnt/vm_root/root; then
     echo "Failed to copy venv..."
-    sudo umount /mnt_vm_root
+    sudo umount /mnt/vm_root
     exit 1
 fi
 
 # Unmount the rootfs image
 echo "Unmounting the rootfs image..."
-if ! sudo umount /mnt_vm_root; then
-    echo "Failed to unmount /mnt_vm_root"
+if ! sudo umount /mnt/vm_root; then
+    echo "Failed to unmount /mnt/vm_root"
     exit 1
 fi
 
