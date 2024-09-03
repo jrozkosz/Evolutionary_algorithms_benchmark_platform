@@ -25,13 +25,14 @@ sudo ./run_app.sh <br />
 ### installing mysql server
 sudo apt update <br />
 sudo apt install mysql-server <br />
-sudo mysql_secure_installation <br />
-*here you can set your root password, I've successfully checked it* <br />
-<br />
-password of a mysql db root has to be set in /backend/.env file
+### creating mysql user
+sudo mysql -u root
+CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'test_password';
+GRANT ALL PRIVILEGES ON *.* TO 'test_user'@'localhost' WITH GRANT OPTION;
+EXIT;
 
 ### creating DB
-sudo mysql -u root -p <br />
+sudo mysql -u test_user -p <br />
 CREATE DATABASE alg_ranking_db; <br />
 EXIT; <br />
 
