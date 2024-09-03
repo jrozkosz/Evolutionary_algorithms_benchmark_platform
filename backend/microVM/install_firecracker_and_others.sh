@@ -21,7 +21,7 @@ sudo ./resize_rfs_memory.sh
 
 ## Install in the rootfs python virtual environment with all the necessary libraries
 echo "Installing python venv in rootfs..."
-sudo ./extend_rootfs.sh
+./extend_rootfs.sh
 
 # Getting a Firecracker Binary
 ARCH="$(uname -m)"
