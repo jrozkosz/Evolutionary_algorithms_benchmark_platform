@@ -30,7 +30,9 @@ sudo setfacl -m u:${USER}:rw /dev/kvm
 chmod +x *.sh
 
 # 3. Getting a Firecracker, rootfs and Guest Kernel Image
-sudo ./install_firecracker_and_others.sh
+sudo apt install -y curl
+./install_firecracker_and_ubuntu.sh
+
 
 ### Now it is ready and microVM can be successfully launched by backend server BUT
 each microVM has to have a network configured <br />
