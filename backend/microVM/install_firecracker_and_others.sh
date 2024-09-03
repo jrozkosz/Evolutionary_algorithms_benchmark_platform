@@ -25,11 +25,7 @@ sudo ./resize_rfs_memory.sh
 echo "Installing python venv in rootfs..."
 ./extend_rootfs.sh
 
-if ! dpkg -l | grep -q curl; then
-    echo "'curl' nie jest zainstalowany. Instalowanie..."
-    sudo apt update
-    sudo apt install -y curl
-fi
+sudo apt install -y curl
 
 # Getting a Firecracker Binary
 ARCH="$(uname -m)"
