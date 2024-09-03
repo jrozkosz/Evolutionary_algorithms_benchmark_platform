@@ -33,6 +33,8 @@ chmod +x *.sh
 sudo apt install -y curl <br />
 ./install_firecracker_and_ubuntu.sh <br />
 sudo ./resize_rfs_memory.sh <br />
+create_python_venv_for_microVM.sh <br />
+
 
 
 ### Now it is ready and microVM can be successfully launched by backend server BUT
