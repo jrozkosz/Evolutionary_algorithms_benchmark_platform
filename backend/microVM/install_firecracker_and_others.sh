@@ -29,6 +29,13 @@ echo "Installing python venv in rootfs..."
 ARCH="$(uname -m)"
 release_url="https://github.com/firecracker-microvm/firecracker/releases"
 latest=$(basename $(curl -fsSLI -o /dev/null -w  %{url_effective} ${release_url}/latest))
+
+if ! dpkg -l | grep -q curl; then
+    echo "'curl' nie jest zainstalowany. Instalowanie..."
+    sudo apt update
+    sudo apt install -y curl
+fi
+
 curl -L ${release_url}/download/${latest}/firecracker-${latest}-${ARCH}.tgz \
 | tar -xz
 
