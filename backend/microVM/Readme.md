@@ -7,9 +7,15 @@ lsmod | grep kvm
 
 ## An example output where it is enabled:
 
-kvm_intel             348160  0
-kvm                   970752  1 kvm_intel
-irqbypass              16384  1 kvm
+kvm_intel             348160  0 <br />
+kvm                   970752  1 kvm_intel <br />
+irqbypass              16384  1 kvm <br />
+
+### if it does not display anything you can try:
+sudo apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils <br />
+sudo modprobe kvm <br />
+sudo modprobe kvm_intel   # for Intel <br />
+sudo modprobe kvm_amd     # for AMD <br />
 
 ## Some Linux distributions use the kvm group to manage access to /dev/kvm, while others rely on access control lists. If you have the ACL package for your distro installed, you can grant Read+Write access with:
 
