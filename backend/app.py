@@ -389,11 +389,12 @@ def display_users():
             for user in users:
                 if user.is_confirmed:
                     algorithm = Algorithm.query.filter_by(user_id=user.id).first()
-                    if os.path.isfile(f'running_files/progress_file_{algorithm.name}.txt'):
-                        with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
-                            progress = float(f.read())
-                            algorithm.running_progress = progress
-                            db.session.commit()
+                    if algorithm is not None:
+                        if os.path.isfile(f'running_files/progress_file_{algorithm.name}.txt'):
+                            with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
+                                progress = float(f.read())
+                                algorithm.running_progress = progress
+                                db.session.commit()
                             
                     users_array.append({
                         "id": user.id,
