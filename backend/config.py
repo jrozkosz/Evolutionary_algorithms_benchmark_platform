@@ -10,7 +10,7 @@ class ApplicationConfig:
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_ECHO = True
-    SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://root:{os.environ["MYSQL_PASSWORD"]}@localhost:3306/{os.environ["MYSQL_DB_NAME"]}'
+    SQLALCHEMY_DATABASE_URI = f'mysql+mysqlconnector://{os.environ["MYSQL_USER"]}:{os.environ["MYSQL_PASSWORD"]}@localhost:{os.environ["MYSQL_PORT"]}/{os.environ["MYSQL_DB_NAME"]}'
 
     SESSION_TYPE = "redis"
     SESSION_PERMANENT = False
