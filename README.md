@@ -28,7 +28,7 @@ sudo apt install mysql-server <br />
 ### creating mysql user
 sudo mysql -u root <br />
 CREATE USER 'test_user'@'localhost' IDENTIFIED BY 'test_password'; <br />
-GRANT ALL PRIVILEGES ON *.* TO 'test_user'@'localhost' WITH GRANT OPTION; <br />
+GRANT ALL PRIVILEGES ON \*.\* TO 'test_user'@'localhost' WITH GRANT OPTION; <br />
 EXIT; <br />
 
 ### creating DB
