@@ -10,10 +10,10 @@ class RunningAlgorithm:
         self.call_count = 0
         self.g_optimum = [300, 400, 600, 800, 900, 1800, 2000, 2200, 2300, 2400, 2600, 2700]
         self.functions = [1, 2]
-        self.max_call_count = [200000, 1000000]
+        self.max_call_count = [20000, 100000]
         self.dimensions = [10, 20]
         self.rand_seed = 999
-        self.runs = 30
+        self.runs = 10
     
     def run_algorithm(self):
         data = {}
