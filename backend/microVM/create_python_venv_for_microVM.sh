@@ -40,7 +40,7 @@ deactivate
 # 6. Remove Python
 echo "Removing Python $PYTHON_VERSION..."
 sudo apt remove --purge -y python3.10 python3.10-venv python3.10-dev
-sudo add-apt-repository --remove ppa:deadsnakes/ppa -y
-sudo apt autoremove -y
+# sudo add-apt-repository --remove ppa:deadsnakes/ppa -y
+# sudo apt autoremove -y
 
 echo "Process complete. Virtual environment is ready, and Python $PYTHON_VERSION has been removed."
