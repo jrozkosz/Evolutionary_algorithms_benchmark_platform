@@ -11,13 +11,17 @@ if ! sudo mount -o loop $ROOTFS /mnt/vm_root; then
     exit 1
 fi
 
-# Copy the init_setup.sh script and the python script to the rootfs
-echo "Copying python virtual environment to the rootfs..."
+# Copy the Python virtual environment to the rootfs
+echo "Copying Python virtual environment to the rootfs..."
 if ! sudo cp -r "$VENV_DIR"/ /mnt/vm_root/root; then
     echo "Failed to copy venv..."
     sudo umount /mnt/vm_root
     exit 1
 fi
+
+# Update shebang and path information to match the rootfs environment
+echo "Updating shebang and path information in the virtual environment..."
+sudo sed -i "s|$(pwd)/microVM_venv|/root/microVM_venv|g" /mnt/vm_root/root/microVM_venv/bin/*
 
 # Unmount the rootfs image
 echo "Unmounting the rootfs image..."
@@ -26,4 +30,4 @@ if ! sudo umount /mnt/vm_root; then
     exit 1
 fi
 
-echo "Rootfs image updated with Python virtual environment and numpy installed."
+echo "Rootfs image updated with Python virtual environment."
