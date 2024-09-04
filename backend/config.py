@@ -15,7 +15,7 @@ class ApplicationConfig:
     SESSION_TYPE = "redis"
     SESSION_PERMANENT = False
     SESSION_USE_SIGNER = True # jezeli nie wykorzystuje secret_key to to dać na false
-    SESSION_REDIS = redis.from_url(f"redis://127.0.0.1:{os.environ["REDIS_PORT"]}")
+    SESSION_REDIS = redis.from_url(f'redis://127.0.0.1:{os.environ["REDIS_PORT"]}')
     
     # mail settings
     MAIL_DEFAULT_SENDER = "ranking.app.auth@gmail.com"
