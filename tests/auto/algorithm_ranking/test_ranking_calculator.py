@@ -1,3 +1,5 @@
+# author: Jakub Rozkosz
+
 from ranking_calculator import RankingCalculator
 import json
 

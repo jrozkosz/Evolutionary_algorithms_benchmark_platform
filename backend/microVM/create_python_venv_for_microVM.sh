@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# author: Jakub Rozkosz
+
 # Settings
 PYTHON_VERSION="3.10.12"
 VENV_DIR="microVM_venv"

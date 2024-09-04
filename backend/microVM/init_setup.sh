@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# author: Jakub Rozkosz
+
 if [ "$#" -ne 2 ];then
   echo "Usage: $0 <VM_IP> <GATEWAY_IP>"
   exit 1

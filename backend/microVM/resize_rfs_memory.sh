@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# author: Jakub Rozkosz
+
 # Required packages
 REQUIRED_PKGS="qemu-utils util-linux e2fsprogs"
 

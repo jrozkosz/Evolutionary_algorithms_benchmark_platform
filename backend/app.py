@@ -58,47 +58,55 @@ def get_current_user():
 
 @app.route("/register", methods=["POST", "GET"])
 def register_user():
-    username = request.json["username"]
-    email = request.json["email"]
-    password = request.json["password"]
-    
-    if username == '' or email == '' or password == '':
-        return jsonify({"error": "Empty values"}), 401
+    try:
+        username = request.json["username"]
+        email = request.json["email"]
+        password = request.json["password"]
+        
+        if username == '' or email == '' or password == '':
+            return jsonify({"error": "Empty values"}), 401
 
-    user_exists = User.query.filter_by(username=username).first() is not None
-    email_exists = User.query.filter_by(email=email).first() is not None
+        user_exists = User.query.filter_by(username=username).first() is not None
+        email_exists = User.query.filter_by(email=email).first() is not None
 
-    if user_exists or email_exists:
-        return jsonify({"error": "User already exists"}), 409
-    
-    hashed_password = bcrypt.generate_password_hash(password=password)
-    new_user = User(username=username, email=email, password=hashed_password)
-    db.session.add(new_user)
-    db.session.commit()
+        if user_exists or email_exists:
+            return jsonify({"error": "User already exists"}), 409
+        
+        hashed_password = bcrypt.generate_password_hash(password=password)
+        new_user = User(username=username, email=email, password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
 
-    send_confirmation_email(app, mail, email, "http://localhost:3000")
-    return jsonify({"info": "confirm email"})
+        send_confirmation_email(app, mail, email, "http://localhost:3000")
+        return jsonify({"info": "confirm email"}), 200
+
+    except Exception as e:
+        return jsonify({"error": "An error occurred while signing up a user", "details": str(e)}), 500
 
 
 @app.route("/confirm/<token>", methods=["POST"])
 def confirm_email(token):
     try:
-        email = confirm_token(app, token)
-    except:
-        return jsonify({"error": "The confirmation link is invalid or has expired."})
-    # user = User.query.filter_by(email=email).first_or_404()
-    user = User.query.filter_by(email=email).first()
-    if user is None:
-        return jsonify({"error": "Such user does not exist."}), 401
+        try:
+            email = confirm_token(app, token)
+        except:
+            return jsonify({"error": "The confirmation link is invalid or has expired."})
+        # user = User.query.filter_by(email=email).first_or_404()
+        user = User.query.filter_by(email=email).first()
+        if user is None:
+            return jsonify({"error": "Such user does not exist."}), 401
+        
+        if user.is_confirmed:
+            return jsonify({"info": "Account already confirmed."})
+        else:
+            user.is_confirmed = True
+            # user.confirmed_on = datetime.datetime.now()
+            db.session.add(user)
+            db.session.commit()
+            return jsonify({"info": "You have confirmed your account. Thanks!"}), 200
     
-    if user.is_confirmed:
-        return jsonify({"info": "Account already confirmed."})
-    else:
-        user.is_confirmed = True
-        # user.confirmed_on = datetime.datetime.now()
-        db.session.add(user)
-        db.session.commit()
-        return jsonify({"info": "You have confirmed your account. Thanks!"})
+    except Exception as e:
+        return jsonify({"error": "An error occurred while confirming a user", "details": str(e)}), 500
 
 
 @app.route("/login", methods=["POST"])

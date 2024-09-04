@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# author: Jakub Rozkosz
+
 monitored_pids=()
 
 while true; do

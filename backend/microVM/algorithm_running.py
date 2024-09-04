@@ -1,3 +1,5 @@
+# author: Jakub Rozkosz
+
 from CEC2022 import CECfunctions, FuncCallsLimitReachedException
 import json
 import numpy as np

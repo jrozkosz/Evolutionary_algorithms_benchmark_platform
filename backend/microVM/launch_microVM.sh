@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# author: Jakub Rozkosz
+
 # Check if the arguments are provided
 if [ "$#" -ne 9 ]; then
   echo "Usage: $0 <tap_device> <firecracker_socket> <vm_ip> <gateway_ip> <ssh_key> <algorithm_file> <CECfunctions> <algorithm_running> <algorithm_name>"

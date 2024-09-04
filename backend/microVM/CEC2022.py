@@ -1,3 +1,5 @@
+# co-author: Jakub Rozkosz
+
 # -*- coding: utf-8 -*-
 """
 Created on Sat Jan  1 16:49:21 2022

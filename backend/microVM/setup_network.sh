@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# author: Jakub Rozkosz
+
 if [ "$#" -ne 2 ]; then
     echo "Usage: $0 <tap_device> <tap_ip>"
     exit 1

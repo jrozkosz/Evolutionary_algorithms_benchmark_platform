@@ -1,3 +1,5 @@
+# author: Jakub Rozkosz
+
 from locust import HttpUser, TaskSet, task, between
 from time import sleep
 
