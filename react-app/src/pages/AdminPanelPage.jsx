@@ -1,3 +1,5 @@
+// author: Jakub Rozkosz
+
 import React, { useState, useEffect } from "react";
 import httpClient from "../httpClient";
 import Layout from "./Layout";
@@ -50,7 +52,7 @@ function AdminPanelPage() {
             console.log("Information added successfully");
             window.location.href = "/information";
         } catch (error) {
-            if (error.response && error.response.data.error === "Text is empty") {
+            if (error.response.status === 400) {
                 alert("Text cannot be empty!");
             } else {
                 alert("There was a problem with adding an info.");

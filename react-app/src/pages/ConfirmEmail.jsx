@@ -1,3 +1,5 @@
+// author: Jakub Rozkosz
+
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import httpClient from "../httpClient";
@@ -14,10 +16,14 @@ function ConfirmEmailPage() {
         console.log("Request to Flask made...");
         const response = await httpClient.post(`//localhost:5000/confirm/${token}`);
         console.log(response.data)
-        setMessage(response.data.info || "LOOOOOOL");
+        setMessage(response.data.info);
       } catch (error) {
+        if (error.response.status === 500) {
+          alert("We're sorry but we are having server issues. Please try again later.");
+        } else {
         setError(error.response.data.error);
       }
+    }
     };
     confirmEmail();
   });

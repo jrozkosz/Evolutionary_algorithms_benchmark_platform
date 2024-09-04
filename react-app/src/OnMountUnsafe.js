@@ -1,3 +1,5 @@
+/* author: Jakub Rozkosz */
+
 import { useEffect, useRef } from "react"
 
 export function useOnMountUnsafe(effect) {

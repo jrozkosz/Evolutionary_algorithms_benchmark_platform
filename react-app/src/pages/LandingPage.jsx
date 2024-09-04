@@ -1,3 +1,5 @@
+// author: Jakub Rozkosz
+
 import React, { useState } from "react";
 import httpClient from "../httpClient";
 import Layout from "./Layout";

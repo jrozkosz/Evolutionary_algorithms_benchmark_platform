@@ -1,3 +1,5 @@
+// author: Jakub Rozkosz
+
 import React, { useState } from "react";
 import httpClient from "../httpClient";
 import "./css_styles/AuthPage.css";
@@ -17,10 +19,12 @@ function RegisterPage() {
             });
             setMessage("If the submitted email is valid, a confirmation mail should be sent. Please go to your mailbox and confirm.");
         } catch (error) {
-            if (error.response.data.error === "Empty values") {
+            if (error.response.status === 401) {
               alert("None of the values can be empty")
             } else if (error.response.status === 409) {
                 alert("Such user already exists");
+            } else if (error.response.status === 500) {
+                alert("We're sorry but we are having server issues. Please try again later.");
             }
         }
     };

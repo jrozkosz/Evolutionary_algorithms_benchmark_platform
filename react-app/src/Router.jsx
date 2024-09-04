@@ -1,3 +1,5 @@
+/* author: Jakub Rozkosz */
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import styled from "styled-components";
 import LandingPage from "./pages/LandingPage";
