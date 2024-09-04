@@ -147,7 +147,7 @@ def run_microVM(alg_name, IPaddrs_significant_num: int):
         result = subprocess.run(command, cwd="microVM", stdout=log_file, stderr=subprocess.STDOUT)
     
     try:
-        engine = create_engine("mysql+pymysql://root:!Mysql2001@localhost:3306/alg_ranking_db", echo=True)
+        engine = create_engine("mysql+pymysql://{os.environ["MYSQL_USER"]}:{os.environ["MYSQL_PASSWORD"]}@localhost:{os.environ["MYSQL_PORT"]}/{os.environ["MYSQL_DB_NAME"]}", echo=True)
         Session = sessionmaker(bind=engine)
         session = Session()
         
