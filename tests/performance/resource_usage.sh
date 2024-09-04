@@ -14,7 +14,7 @@ while true; do
       # RAM
       free_ram=$(free -h | grep Mem | awk '{print $4}')
 
-      # CPU (średnie obciążenie systemu w ciągu 1 minuty)
+      # CPU (średnie obciążenie systemu w ciągu 1 minuty - średnia liczba procesów aktywnych lub oczekujących na CPU w ciągu ostatniej minuty)
       cpu_load=$(uptime | awk -F'[a-z]:' '{ print $2 }' | awk '{print $1}')
 
       # dysk
