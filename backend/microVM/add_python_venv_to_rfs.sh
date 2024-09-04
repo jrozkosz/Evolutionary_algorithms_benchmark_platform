@@ -19,10 +19,6 @@ if ! sudo cp -r "$VENV_DIR"/ /mnt/vm_root/root; then
     exit 1
 fi
 
-# Update shebang and path information to match the rootfs environment
-echo "Updating shebang and path information in the virtual environment..."
-sudo sed -i "s|$(pwd)/microVM_venv|/root/microVM_venv|g" /mnt/vm_root/root/microVM_venv/bin/*
-
 # Unmount the rootfs image
 echo "Unmounting the rootfs image..."
 if ! sudo umount /mnt/vm_root; then
