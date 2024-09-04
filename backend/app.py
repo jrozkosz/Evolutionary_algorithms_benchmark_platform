@@ -111,30 +111,38 @@ def confirm_email(token):
 
 @app.route("/login", methods=["POST"])
 def login_user():
-    email = request.json["email"]
-    password = request.json["password"]
-    user = User.query.filter_by(email=email).first()
-    
-    if user is None:
-        return jsonify({"error": "Anauthorized"}), 401
-    if not bcrypt.check_password_hash(user.password, password):
-        return jsonify({"error": "Anauthorized"}), 401
-    if not user.is_confirmed:
-        return jsonify({"error": "The account has not been confirmed."}), 403
-    
-    session["user_id"] = user.id
-    session["username"] = user.username
-    
-    response = jsonify({
-        "id": user.id,
-        "email": user.email
-    })
-    return response
+    try:
+        email = request.json["email"]
+        password = request.json["password"]
+        user = User.query.filter_by(email=email).first()
+        
+        if user is None:
+            return jsonify({"error": "Anauthorized"}), 401
+        if not bcrypt.check_password_hash(user.password, password):
+            return jsonify({"error": "Anauthorized"}), 401
+        if not user.is_confirmed:
+            return jsonify({"error": "The account has not been confirmed."}), 403
+        
+        session["user_id"] = user.id
+        session["username"] = user.username
+        
+        response = jsonify({
+            "id": user.id,
+            "email": user.email
+        })
+        return response, 200
+
+    except Exception as e:
+        return jsonify({"error": "An error occurred while sigining in a user", "details": str(e)}), 500
 
 @app.route("/logout", methods=["POST"])
 def logout_user():
-    session.pop("user_id")
-    return "200"
+    try:
+        session.pop("user_id")
+        return "200"
+
+    except Exception as e:
+        return jsonify({"error": "An error occurred while confirming a user", "details": str(e)}), 500
 
 
 def run_microVM(alg_name, IPaddrs_significant_num: int):

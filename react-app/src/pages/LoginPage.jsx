@@ -24,8 +24,8 @@ function LoginPage() {
                     alert("Invalid credentials");
                 } else if (error.response.status === 403) {
                     alert(error.response.data.error);
-                } else {
-                    alert(`An unexpected error occurred: ${error.response.status}`);
+                } else if (error.response.status === 500) {
+                    alert("We're sorry but we are having server issues. Please try again later.");
                 }
             } else {
                 console.error("Error details:", error);

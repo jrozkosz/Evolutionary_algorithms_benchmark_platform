@@ -8,8 +8,19 @@ import "./css_styles/Navbar.css";
 function Navbar({ is_admin }) {
 
   const logoutUser = async () => {
+    try {
     await httpClient.post("//localhost:5000/logout");
     window.location.href = "/";
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 500) {
+          alert("We're sorry but we are having server issues. Please try again later.");
+      } else {
+        console.error("Error details:", error);
+        alert("An unexpected error occurred. Please try again later.");
+      }
+    }
+    }
   };
 
   return (

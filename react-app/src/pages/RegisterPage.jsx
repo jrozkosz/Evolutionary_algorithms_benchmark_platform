@@ -19,12 +19,17 @@ function RegisterPage() {
             });
             setMessage("If the submitted email is valid, a confirmation mail should be sent. Please go to your mailbox and confirm.");
         } catch (error) {
-            if (error.response.status === 401) {
-              alert("None of the values can be empty")
-            } else if (error.response.status === 409) {
-                alert("Such user already exists");
-            } else if (error.response.status === 500) {
-                alert("We're sorry but we are having server issues. Please try again later.");
+            if (error.response) {
+                if (error.response.status === 401) {
+                alert("None of the values can be empty")
+                } else if (error.response.status === 409) {
+                    alert("Such user already exists");
+                } else if (error.response.status === 500) {
+                    alert("We're sorry but we are having server issues. Please try again later.");
+                }
+            } else {
+                console.error("Error details:", error);
+                alert("An unexpected error occurred. Please try again later.");
             }
         }
     };
