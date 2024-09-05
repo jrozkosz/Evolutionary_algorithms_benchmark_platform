@@ -15,7 +15,7 @@ class RunningAlgorithm:
         self.max_call_count = [2000, 10000]
         self.dimensions = [10, 20]
         self.rand_seed = 999
-        self.runs = 20
+        self.runs = 30
     
     def run_algorithm(self):
         data = {}
