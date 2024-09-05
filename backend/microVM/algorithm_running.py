@@ -3,6 +3,7 @@
 from CEC2022 import CECfunctions, FuncCallsLimitReachedException
 import json
 import numpy as np
+import random
 import sys
 import importlib
 
@@ -15,10 +16,13 @@ class RunningAlgorithm:
         self.max_call_count = [2000, 10000]
         self.dimensions = [10, 20]
         self.rand_seed = 999
-        self.runs = 30
+        self.runs = 15
     
     def run_algorithm(self):
         data = {}
+        
+        random.seed(self.rand_seed)
+        np.random.seed(self.rand_seed)
 
         CECfuncs = CECfunctions()
         for dim, max_fes in zip(enumerate(self.dimensions), self.max_call_count):
@@ -28,21 +32,16 @@ class RunningAlgorithm:
                 real_value = CECfuncs.get_function_min(fun)
                 CECfuncs.config_cec_functions(dim, fun)
                 for r in range(self.runs):
-                    print(f"Run number {r}")
-                    # best_individual = evolutionary_algorithm(CECfunctions.call_cec22_func, 10, 200000, 0.5, [1, 2, 3, 4])
-                    best_individual = np.zeros([2, dim]) # przekazuje osobinika jako tablicę, aby móc przekazać przez referencję
                     try:
-                        evolutionary_algorithm(CECfuncs.call_cec22_func, dim, self.rand_seed, best_individual)
+                        evolutionary_algorithm(CECfuncs.call_cec22_func, dim, self.rand_seed)
                     except FuncCallsLimitReachedException as e:
-                        # print("X_BEST: ", best_individual[0])
                         calls_count = CECfuncs.get_calls_count()
-                        CECfuncs.reset_call_count()
-                        best_value = CECfuncs.call_cec22_func(best_individual[0])
+                        best_value = CECfuncs.best_so_far[1]
                         print(best_value)
                         CECfuncs.reset_call_count()
+                        CECfuncs.best_so_far = None
                         error = abs(best_value - real_value)
                         print("error: ", error)
-                        # all_algs_fun_trials.append(("Current alg", error))
                         print(e)
                         # saving the new algorithm's results to a file
                         if f"function_{fun}" not in data:
@@ -60,8 +59,6 @@ class RunningAlgorithm:
         with open(f'progress_file_{alg_name}.txt', 'w') as f:
             all_runs = len(self.dimensions)*len(self.functions)*self.runs #*(self.max_call_count[0]+self.max_call_count[1])
             current_state = (dim*len(self.functions)*self.runs + fun*self.runs + (run+1)) #*max_fes
-            print("ALL RUNS: ", all_runs)
-            print("CURRENT_STATE: ", current_state)
             progress = int((current_state/all_runs)*100)
             f.write(str(progress))
 

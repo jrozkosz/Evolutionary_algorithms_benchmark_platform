@@ -9,7 +9,7 @@ def evolutionary_algorithm(obj_function, dimension, rand_seed):
     random.seed(rand_seed)
     np.random.seed(rand_seed)
     # population creation
-    pop_size = 30
+    pop_size = 40
     pop = np.array([])
     for i in range(pop_size):
         x = np.random.uniform(-UPPER_BOUND, UPPER_BOUND, size=dimension)
@@ -17,7 +17,7 @@ def evolutionary_algorithm(obj_function, dimension, rand_seed):
     pop = pop.reshape(pop_size, dimension)
 
     evol = Evolutionary(dimension)
-    x_best = evol.evolutionary_alg(obj_function, pop, pop_size, 2, 25)
+    x_best = evol.evolutionary_alg(obj_function, pop, pop_size, 3, 20)
 
 class Evolutionary:
     def __init__(self, dimension):

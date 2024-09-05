@@ -23,6 +23,7 @@ class FuncCallsLimitReachedException(Exception):
 class CECfunctions:
   def __init__(self) -> None:
     self.call_count = 0
+    self.best_so_far = None
     self.max_call_count = 200000
     self.function_to_call = 1
     self.nx = 10 # problem dimension
@@ -76,15 +77,22 @@ class CECfunctions:
 
   def get_calls_count(self):
     return self.call_count
-
-  # @staticmethod
+  
   def count_calls(func):
     def wrapper(self, *args, **kwargs):
         if func.__name__ == self.functions_dict[self.function_to_call]:
-          self.call_count += 1
-          if self.call_count > self.max_call_count:
-              raise FuncCallsLimitReachedException
-        return func(self, *args, **kwargs)
+            self.call_count += 1
+            if self.call_count > self.max_call_count:
+                raise FuncCallsLimitReachedException
+        
+        result = func(self, *args, **kwargs)
+
+        x = args[0]
+
+        if self.best_so_far is None or result < self.best_so_far[1]:
+            self.best_so_far = [x, result]
+        
+        return result
     return wrapper
 
   def ellips_func(self, x, nx, Os, Mr, s_flag, r_flag):
