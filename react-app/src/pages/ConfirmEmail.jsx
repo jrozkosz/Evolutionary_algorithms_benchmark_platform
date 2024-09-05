@@ -14,7 +14,7 @@ function ConfirmEmailPage() {
     const confirmEmail = async () => {
       try {
         console.log("Request to Flask made...");
-        const response = await httpClient.post(`//localhost:5000/confirm/${token}`);
+        const response = await httpClient.post(`/confirm/${token}`);
         console.log(response.data)
         setMessage(response.data.info);
       } catch (error) {
@@ -55,7 +55,7 @@ export default ConfirmEmailPage;
 //     const confirmEmail = async () => {
 //       try {
 //         console.log("Request to Flask made...");
-//         const response = await httpClient.post(`//localhost:5000/confirm/${token}`);
+//         const response = await httpClient.post(`/confirm/${token}`);
 //         // console.log("After...")
 //         console.log(response.data)
 //         setMessage(response.data.info || "LOOOOOOL");

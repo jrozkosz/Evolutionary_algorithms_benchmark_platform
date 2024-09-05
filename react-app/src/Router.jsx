@@ -1,7 +1,6 @@
 /* author: Jakub Rozkosz */
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// import styled from "styled-components";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
@@ -12,14 +11,9 @@ import AlgorithmsRankingsPage from "./pages/AlgorithmsRankingsPage";
 import InformationPage from "./pages/InformationPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
 
-// const AppContainer = styled.div`
-//   width: 100%;
-//   height: 100%;
-// `;
 
 function Router() {
   return (
-    // <AppContainer>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />}></Route>
@@ -33,7 +27,6 @@ function Router() {
           <Route element={<NotFound />}></Route>
         </Routes>
       </BrowserRouter>
-    // </AppContainer>
   );
 }
 

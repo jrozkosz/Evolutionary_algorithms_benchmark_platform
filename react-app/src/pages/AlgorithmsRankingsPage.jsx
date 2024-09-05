@@ -19,7 +19,7 @@ function AlgorithmsRankingsPage() {
     useOnMountUnsafe(() => {
         (async () => {
             try {
-                const resp = await httpClient.get("//localhost:5000/@me");
+                const resp = await httpClient.get("/@me");
                 setUser(resp.data);
                 setIsAdmin(resp.data.is_admin)
             } catch (error) {
@@ -34,7 +34,7 @@ function AlgorithmsRankingsPage() {
         if(user != null) {
             (async () => {
                 try {
-                    const response = await httpClient.get("//localhost:5000/algorithms_rankings");
+                    const response = await httpClient.get("/algorithms_rankings");
                     setRankings(response.data);
                 } catch (error) {
                     if (error.response) {

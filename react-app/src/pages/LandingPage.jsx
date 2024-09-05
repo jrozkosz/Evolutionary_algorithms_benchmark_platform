@@ -13,7 +13,7 @@ function LandingPage() {
     useOnMountUnsafe(() => {
         (async () => {
             try {
-                const resp = await httpClient.get("//localhost:5000/@me");
+                const resp = await httpClient.get("/@me");
                 setUser(resp.data);
                 setIsAdmin(resp.data.is_admin);
                 // window.location.href = "/upload";

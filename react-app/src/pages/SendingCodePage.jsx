@@ -18,7 +18,7 @@ function SendingCodePage() {
   useOnMountUnsafe(() => {
     (async () => {
       try {
-        const resp = await httpClient.get("//localhost:5000/@me");
+        const resp = await httpClient.get("/@me");
         setUser(resp.data);
         setIsAdmin(resp.data.is_admin);
       } catch (error) {
@@ -33,7 +33,7 @@ function SendingCodePage() {
     if (user != null) {
       const interval = setInterval(async () => {
         try {
-          const response = await httpClient.get("//localhost:5000/upload/progress");
+          const response = await httpClient.get("/upload/progress");
           const progress = response.data.progress;
           setNotUploaded(false);
           setProgress(progress);
@@ -75,7 +75,7 @@ function SendingCodePage() {
     formData.append("file", selectedFile);
 
     try {
-      await httpClient.post("//localhost:5000/upload", formData);
+      await httpClient.post("/upload", formData);
       console.log("File uploaded successfully");
 
       setSuccessMessage("Sent successfully");

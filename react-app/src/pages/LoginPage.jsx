@@ -12,7 +12,7 @@ function LoginPage() {
         console.log(email, password);
 
         try {
-            await httpClient.post("//localhost:5000/login", {
+            await httpClient.post("/login", {
                 email,
                 password,
             });
