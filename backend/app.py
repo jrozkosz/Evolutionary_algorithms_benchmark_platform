@@ -27,7 +27,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 with app.app_context():
-    # db.drop_all()
+    db.drop_all()
     db.create_all()
     
     admin_exists = User.query.filter_by(username='admin').first() is not None
@@ -156,6 +156,7 @@ def run_microVM(alg_name, IPaddrs_significant_num: int):
             f"{alg_name}.py",
             "CEC2022.py", 
             "algorithm_running.py",
+            "../ranking_config.json",
             f"{alg_name}"
         ]
         

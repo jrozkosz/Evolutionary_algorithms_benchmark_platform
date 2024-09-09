@@ -470,7 +470,7 @@ class CECfunctions:
     i=4
     fit[i] = self.ellips_func(x,nx,Os[i*nx:(i+1)*nx],Mr[i*nx:(i+1)*nx,0:nx],1,0)
     fit[i]=10000*fit[i]/1e+10
-    f = cf_cal(x, nx, Os, delta,bias,fit,cf_num)
+    f = self.cf_cal(x, nx, Os, delta,bias,fit,cf_num)
     return f
 
   @count_calls
@@ -486,7 +486,7 @@ class CECfunctions:
     fit[i] = self.rastrigin_func(x,nx,Os[i*nx:(i+1)*nx],Mr[i*nx:(i+1)*nx,0:nx],1,r_flag)
     i=2
     fit[i] = self.hgbat_func(x,nx,Os[i*nx:(i+1)*nx],Mr[i*nx:(i+1)*nx,0:nx],1,r_flag)
-    f = cf_cal(x, nx, Os, delta,bias,fit,cf_num)
+    f = self.cf_cal(x, nx, Os, delta,bias,fit,cf_num)
     return f
 
   @count_calls
@@ -508,7 +508,7 @@ class CECfunctions:
     i=4
     fit[i] = self.rastrigin_func(x,nx,Os[i*nx:(i+1)*nx],Mr[i*nx:(i+1)*nx,0:nx],1,r_flag)
     fit[i]=10000*fit[i]/1e+3
-    f = cf_cal(x,  nx, Os, delta,bias,fit,cf_num)
+    f = self.cf_cal(x,  nx, Os, delta,bias,fit,cf_num)
     return f
 
   @count_calls
@@ -535,7 +535,7 @@ class CECfunctions:
     i=5
     fit[i] = self.escaffer6_func(x,nx,Os[i*nx:(i+1)*nx],Mr[i*nx:(i+1)*nx,0:nx],1,r_flag)
     fit[i]=10000*fit[i]/2e+7
-    f = cf_cal(x,  nx, Os, delta,bias,fit,cf_num)
+    f = self.cf_cal(x,  nx, Os, delta,bias,fit,cf_num)
     return f
 
   def shiftfunc(self, x,  nx, Os):

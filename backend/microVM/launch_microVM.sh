@@ -3,8 +3,8 @@
 # author: Jakub Rozkosz
 
 # Check if the arguments are provided
-if [ "$#" -ne 9 ]; then
-  echo "Usage: $0 <tap_device> <firecracker_socket> <vm_ip> <gateway_ip> <ssh_key> <algorithm_file> <CECfunctions> <algorithm_running> <algorithm_name>"
+if [ "$#" -ne 10 ]; then
+  echo "Usage: $0 <tap_device> <firecracker_socket> <vm_ip> <gateway_ip> <ssh_key> <algorithm_file> <CECfunctions> <algorithm_running> <ranking_params> <algorithm_name>"
   exit 1
 fi
 
@@ -16,7 +16,8 @@ SSH_KEY=$5
 ALGORITHM_FILE=$6
 CECFUNCTIONS=$7
 ALGORITHM_RUNNING=$8
-ALGORITHM_NAME=$9
+RANKING_PARAMS=$9
+ALGORITHM_NAME="${10}"
 # CEC_DATA="${10}"
 CONFIG_TEMPLATE="vm_config_template.json"
 CONFIG_FILE="vm_config_$(date +%s).json"
@@ -34,6 +35,7 @@ echo "ALGORITHM_FILE: $ALGORITHM_FILE"
 echo "CECFUNCTIONS: $CECFUNCTIONS"
 echo "ALGORITHM_RUNNING: $ALGORITHM_RUNNING"
 echo "ALGORITHM_NAME: $ALGORITHM_NAME"
+echo "RANKING_PARAMS: $(basename "$RANKING_PARAMS")"
 # echo "CEC_DATA: $CEC_DATA"
 
 # Check if the configuration template file exists
@@ -77,7 +79,7 @@ echo "Copying the init_setup.sh, python scripts and libraries to the rootfs..."
 if ! cp "$INIT_SCRIPT" /mnt/vm_root/root/init_setup.sh || ! cp "$ALGORITHM_FILE" /mnt/vm_root/root/$ALGORITHM_FILE || 
    ! cp "$CECFUNCTIONS" /mnt/vm_root/root/$CECFUNCTIONS || ! cp "$ALGORITHM_RUNNING" /mnt/vm_root/root/$ALGORITHM_RUNNING ||
    ! cp -r input_data/ /mnt/vm_root/root || ! ls /mnt/vm_root/root || ! ls /mnt/vm_root/root/input_data || 
-   ! cp "$SSH_KEY" /mnt/vm_root/root/$SSH_KEY; then
+   ! cp "$RANKING_PARAMS" /mnt/vm_root/root/$(basename "$RANKING_PARAMS") || ! cp "$SSH_KEY" /mnt/vm_root/root/$SSH_KEY; then
     echo "Failed to copy one or more scripts"
     sudo umount /mnt/vm_root
     exit 1

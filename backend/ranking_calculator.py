@@ -4,12 +4,14 @@ import numpy as np
 class RankingCalculator:
     def __init__(self) -> None:
         self.call_count = 0
-        self.g_optimum = [300, 400, 600, 800, 900, 1800, 2000, 2200, 2300, 2400, 2600, 2700]
-        self.functions = [1, 2]
-        self.max_call_count = [2000, 10000]
-        self.dimensions = [10, 20]
-        self.rand_seed = 999
-        self.runs = 15
+        with open("ranking_config.json", 'r') as f:
+            params = json.load(f)
+        self.g_optimum = params["g_optimum"]
+        self.functions = params["functions"]
+        self.max_call_count = params["max_call_count"]
+        self.dimensions = params["dimensions"]
+        self.rand_seed = params["rand_seed"]
+        self.runs = params["runs"]
     
     def set_parameters(self, functions, max_call_count, dimensions, runs):
         self.functions = functions

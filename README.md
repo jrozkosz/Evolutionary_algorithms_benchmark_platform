@@ -70,5 +70,6 @@ admin user passes: <br />
 email: 'admin' <br />
 password: 'admin' <br />
 
-examplary evolutionary algorithm with required interface is located in: /backend/algorithm.py
-
+Two examplary evolutionary algorithm with required interface are located in: <br />
+*/backend/algorithm.py* <br />
+*/backend/algorithm_v2.py* <br />
