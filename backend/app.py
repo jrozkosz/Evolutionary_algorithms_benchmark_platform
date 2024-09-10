@@ -205,9 +205,9 @@ def update_algorithm_running_results(currentAlgorithm, session):
         currentAlgorithm.running_progress = progress
         session.commit()
     
-    # os.remove(f'running_files/running_results_{currentAlgorithm.name}.json')
-    # os.remove(f'running_files/progress_file_{currentAlgorithm.name}.txt')
-    # os.remove(f'running_files/running_logs_{currentAlgorithm.name}.txt')
+    os.remove(f'running_files/running_results_{currentAlgorithm.name}.json')
+    os.remove(f'running_files/progress_file_{currentAlgorithm.name}.txt')
+    os.remove(f'running_files/running_logs_{currentAlgorithm.name}.txt')
     
     return algRunningResults
 
@@ -276,35 +276,35 @@ def display_rankings():
     return jsonify(data), 200
 
 
-
 @app.route("/upload/progress", methods=["GET"])
 def display_progress():
     try:  
         user_id = session.get("user_id")
-        algorithm = Algorithm.query.filter_by(user_id=user_id).first()
-        if algorithm is not None:
+        
+        response = {'algorithms': []}
+        
+        algorithms = Algorithm.query.filter_by(user_id=user_id).all()
+        
+        for algorithm in algorithms:
             if algorithm.error_occurred:
-                return jsonify({'error': "An error occurred when processing the algorithm"}), 400
+                response['algorithms'].append({'id': algorithm.id, 'name': algorithm.name, 'error': algorithm.error_occurred, 'progress': 0})
             if algorithm.finished:
-                return jsonify({'progress': 100})
+                response['algorithms'].append({'id': algorithm.id, 'name': algorithm.name, 'error': algorithm.error_occurred, 'progress': 100})
             elif algorithm.running:
-                # microVM_IP_addr = algorithm.microVM_IP_addr
-                
-                # subprocess.run(["scp", "-i", "/microVM/ubuntu-22.04.id_rsa", "-o", "StrictHostKeyChecking=no", f"root@{microVM_IP_addr}:/root/progress_file.txt", "."]) 
                 try:
                     with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
                         progress = float(f.read())
                         algorithm.running_progress = progress
                         db.session.commit()
-                        return jsonify({"progress": progress}), 200
+                        response['algorithms'].append({'id': algorithm.id, 'name': algorithm.name, 'error': algorithm.error_occurred, 'progress': progress}) 
                 except Exception:
-                    return jsonify({"progress": 0}), 200
-            
-        return jsonify({"error": "Algorithm has not yet been uploaded"}), 400
+                    response['algorithms'].append({'id': algorithm.id, 'name': algorithm.name, 'error': algorithm.error_occurred, 'progress': 0})
+                    
+        return jsonify(response), 200
     
     except Exception as e:
         db.session.rollback()
-        return jsonify({"error": "An error occurred while deleting user", "details": str(e)}), 500
+        return jsonify({"error": "An error occurred while fetching algorithms progress", "details": str(e)}), 500
         
 
 @app.route("/upload", methods=["POST"])
@@ -346,6 +346,50 @@ def upload_file():
         currentAlgorithm.running = False
         db.session.commit()
         return jsonify({"error": str(e)})
+
+
+@app.route("/delete_algorithm", methods=["POST"])
+def delete_algorithm():
+    try:
+        algorithm_id = request.json["algorithm_id"]
+        algorithm = Algorithm.query.filter_by(id=algorithm_id).first()
+
+        if algorithm is None:
+            return jsonify({"error": "Algorithm not found"}), 404
+        
+        if algorithm.microVM_IP_addr:
+            result = subprocess.run(["ssh", "-i", "microVM/ubuntu-22.04.id_rsa", "-o", "StrictHostKeyChecking=no", f"root@{algorithm.microVM_IP_addr}", "reboot"])
+            print("\n\n\n\n\n\n\n RESULTS: ", result, "\n\n\n\n\n\n\n\n\n\n")
+        
+        if os.path.exists(f'running_files/running_results_{algorithm.name}.json'):
+            os.remove(f'running_files/running_results_{algorithm.name}.json')
+        if os.path.exists(f'running_files/progress_file_{algorithm.name}.txt'):
+            os.remove(f'running_files/progress_file_{algorithm.name}.txt')
+        if os.path.exists(f'running_files/running_logs_{algorithm.name}.txt'):
+            os.remove(f'running_files/running_logs_{algorithm.name}.txt')
+
+        if algorithm.cec_results_id is not None:
+            cec_results = CECResults.query.filter_by(id=algorithm.cec_results_id).first()
+            db.session.delete(cec_results)
+        if algorithm.proposed_results_id is not None:
+            proposed_results = ProposedResults.query.filter_by(id=algorithm.proposed_results_id).first()
+            db.session.delete(proposed_results)
+        if algorithm.classic_results_id is not None:
+            classic_results = ClassicResults.query.filter_by(id=algorithm.classic_results_id).first()
+            db.session.delete(classic_results)
+        alg_running_results = AlgorithmRunningResults.query.filter_by(algorithm_id=algorithm_id).first()
+        if alg_running_results is not None:
+            db.session.delete(alg_running_results)
+        
+        db.session.delete(algorithm)
+        db.session.commit()
+        
+        return jsonify({"message": "Successfully deleted algorithm."}), 200
+
+    except Exception as e:
+        db.session.rollback()
+        print("\n\n\n ERROR DETAILS: ", str(e), "\n\n\n")
+        return jsonify({"error": "An error occurred while deleting algorithm.", "details": str(e)}), 500
 
 
 @app.route("/information", methods=["GET"])
@@ -405,20 +449,23 @@ def display_users():
         if users:
             for user in users:
                 if user.is_confirmed:
-                    algorithm = Algorithm.query.filter_by(user_id=user.id).first()
-                    if algorithm is not None:
+                    algorithms = Algorithm.query.filter_by(user_id=user.id).all()
+                    lowest_run_percent = 100 if algorithms is not None else 0
+                    for algorithm in algorithms:
                         if os.path.isfile(f'running_files/progress_file_{algorithm.name}.txt'):
                             with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
                                 progress = float(f.read())
                                 algorithm.running_progress = progress
                                 db.session.commit()
+                        if algorithm.running_progress < lowest_run_percent:
+                            lowest_run_percent = algorithm.running_progress
                             
                     users_array.append({
                         "id": user.id,
                         "username": user.username,
                         "email": user.email,
-                        "finished_running": algorithm.finished if algorithm else False,
-                        "running_progress": algorithm.running_progress if algorithm else 0
+                        "algorithms_sent": len(algorithms),
+                        "running_progress": lowest_run_percent
                     })
         
         return jsonify({"users": users_array}), 200

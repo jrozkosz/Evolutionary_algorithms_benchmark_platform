@@ -116,7 +116,7 @@ sudo rm -f $FIRECRACKER_SOCKET
 sudo ./firecracker --api-sock "$FIRECRACKER_SOCKET" --config-file "$CONFIG_FILE" &
 
 # Wait for the microVM to boot and configure the network
-sleep 2
+sleep 3
 
 # Remove the copied rootfs image and configuration file after the microVM has finished its work
 echo "Removing the copied rootfs image and configuration file..."
@@ -161,5 +161,8 @@ scp -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP:/root/running_results_$A
 ssh -i $SSH_KEY -o StrictHostKeyChecking=no root@$VM_IP 'reboot'
 
 sudo rm -f $FIRECRACKER_SOCKET
+
+echo "Removing TAP device $TAP_DEVICE..."
+sudo ip link del "$TAP_DEVICE" || true
 
 exit $RET_CODE

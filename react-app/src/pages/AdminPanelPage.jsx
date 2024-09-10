@@ -67,8 +67,10 @@ function AdminPanelPage() {
             });
             setUsers(users.filter(user => user.id !== user_id));
         } catch (error) {
-            if(error.response.data.error === "User not found") {
-                alert("Such user does not exist.");
+            if(error.response) {
+                if(error.response.status === 404) {
+                    alert("Such user does not exist.");
+                }
             } else {
                 alert("There was a problem with deleting a user.")
             }
@@ -90,7 +92,7 @@ function AdminPanelPage() {
                                 <button className="user-item-button" onClick={() => deleteUser(user.id)}>Delete</button>
                                 <p><strong>Username:</strong> {user.username}</p>
                                 <p><strong>Email:</strong> {user.email}</p>
-                                <p><strong>Finished Running:</strong> {user.finished_running ? "Yes" : "No"}</p>
+                                <p><strong>Algorithms Sent:</strong> {user.algorithms_sent}</p>
                                 <p><strong>Running Progress:</strong> {user.running_progress}%</p>
                             </div>
                         ))}
