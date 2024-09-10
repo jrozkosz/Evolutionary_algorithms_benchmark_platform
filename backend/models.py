@@ -39,6 +39,7 @@ class Algorithm(db.Model):
     error_occurred = db.Column(db.Boolean, nullable=False, default=False)
     running_progress = db.Column(db.Float, default=0.0)
     microVM_IP_addr = db.Column(db.String(15), nullable=True)
+    added_date = db.Column(db.DateTime, default=datetime.now, nullable=False)
     
     cec_results_id = db.Column(db.String(32))
     proposed_results_id = db.Column(db.String(32))

@@ -449,23 +449,21 @@ def display_users():
         if users:
             for user in users:
                 if user.is_confirmed:
-                    algorithms = Algorithm.query.filter_by(user_id=user.id).all()
-                    lowest_run_percent = 100 if algorithms is not None else 0
+                    algorithms = Algorithm.query.filter_by(user_id=user.id).order_by(desc(Algorithm.added_date)).all()
+                    latest_run_percent = algorithms[0].running_progress
                     for algorithm in algorithms:
                         if os.path.isfile(f'running_files/progress_file_{algorithm.name}.txt'):
                             with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
                                 progress = float(f.read())
                                 algorithm.running_progress = progress
                                 db.session.commit()
-                        if algorithm.running_progress < lowest_run_percent:
-                            lowest_run_percent = algorithm.running_progress
-                            
+
                     users_array.append({
                         "id": user.id,
                         "username": user.username,
                         "email": user.email,
                         "algorithms_sent": len(algorithms),
-                        "running_progress": lowest_run_percent
+                        "running_progress": latest_run_percent
                     })
         
         return jsonify({"users": users_array}), 200
