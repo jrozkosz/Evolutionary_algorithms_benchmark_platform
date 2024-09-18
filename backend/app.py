@@ -10,6 +10,7 @@ from conf_email import send_confirmation_email
 from flask_mail import Mail
 import subprocess
 import multiprocessing
+import threading
 import os
 from uuid import uuid4
 import json
@@ -346,6 +347,12 @@ def upload_file():
         currentAlgorithm.running = False
         db.session.commit()
         return jsonify({"error": str(e)})
+    
+
+def reboot_microVM(microVM_IP_addr):
+    subprocess.run(["ssh", "-i", "microVM/ubuntu-22.04.id_rsa", 
+                    "-o", "StrictHostKeyChecking=no", 
+                    f"root@{microVM_IP_addr}", "reboot"])
 
 
 @app.route("/delete_algorithm", methods=["POST"])
@@ -358,9 +365,9 @@ def delete_algorithm():
             return jsonify({"error": "Algorithm not found"}), 404
         
         if algorithm.microVM_IP_addr:
-            result = subprocess.run(["ssh", "-i", "microVM/ubuntu-22.04.id_rsa", "-o", "StrictHostKeyChecking=no", f"root@{algorithm.microVM_IP_addr}", "reboot"])
-            print("\n\n\n\n\n\n\n RESULTS: ", result, "\n\n\n\n\n\n\n\n\n\n")
-        
+            thread = threading.Thread(target=reboot_microVM, args=(algorithm.microVM_IP_addr,))
+            thread.start()
+
         if os.path.exists(f'running_files/running_results_{algorithm.name}.json'):
             os.remove(f'running_files/running_results_{algorithm.name}.json')
         if os.path.exists(f'running_files/progress_file_{algorithm.name}.txt'):
