@@ -446,11 +446,13 @@ def display_users():
     try:
         users = User.query.all()
         users_array = []
+        latest_run_percent = 0
         if users:
             for user in users:
                 if user.is_confirmed:
                     algorithms = Algorithm.query.filter_by(user_id=user.id).order_by(desc(Algorithm.added_date)).all()
-                    latest_run_percent = algorithms[0].running_progress
+                    if algorithms:
+                        latest_run_percent = algorithms[0].running_progress
                     for algorithm in algorithms:
                         if os.path.isfile(f'running_files/progress_file_{algorithm.name}.txt'):
                             with open(f'running_files/progress_file_{algorithm.name}.txt', 'r') as f:
@@ -469,6 +471,7 @@ def display_users():
         return jsonify({"users": users_array}), 200
 
     except Exception as e:
+        print("\n\nERROR details", str(e))
         return jsonify({"error": "An error occurred while fetching users", "details": str(e)}), 500
 
 
