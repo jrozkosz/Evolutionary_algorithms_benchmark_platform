@@ -22,9 +22,6 @@ class RunningAlgorithm:
     
     def run_algorithm(self):
         data = {}
-        
-        random.seed(self.rand_seed)
-        np.random.seed(self.rand_seed)
 
         CECfuncs = CECfunctions()
         for dim, max_fes in zip(enumerate(self.dimensions), self.max_call_count):
@@ -33,9 +30,11 @@ class RunningAlgorithm:
             for fun_idx, fun in enumerate(self.functions):
                 real_value = CECfuncs.get_function_min(fun)
                 CECfuncs.config_cec_functions(dim, fun)
-                for r in range(self.runs):
+                for r, rand_s in zip(range(self.runs), self.rand_seed):
                     try:
-                        evolutionary_algorithm(CECfuncs.call_cec22_func, dim, self.rand_seed)
+                        random.seed(rand_s)
+                        np.random.seed(rand_s)
+                        evolutionary_algorithm(CECfuncs.call_cec22_func, dim, rand_s)
                     except FuncCallsLimitReachedException as e:
                         calls_count = CECfuncs.get_calls_count()
                         best_value = CECfuncs.best_so_far[1]

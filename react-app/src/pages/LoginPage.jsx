@@ -17,7 +17,7 @@ function LoginPage() {
                 password,
             });
 
-            window.location.href = "/";
+            window.location.href = "/information";
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 401) {

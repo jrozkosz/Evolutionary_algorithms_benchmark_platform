@@ -27,7 +27,7 @@ function Navbar({ is_admin }) {
     <div className="navbar-container">
       <nav className="navbar">
         <ul className="navbar-list">
-          <li className="navbar-item"><Link to="/">Home</Link></li>
+          {/* <li className="navbar-item"><Link to="/">Home</Link></li> */}
           <li className="navbar-item"><Link to="/information">Information</Link></li>
           <li className="navbar-item"><Link to="/upload">Upload</Link></li>
           <li className="navbar-item"><Link to="/algorithms_rankings">Rankings</Link></li>

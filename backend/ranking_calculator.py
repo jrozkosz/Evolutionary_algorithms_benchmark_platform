@@ -1,17 +1,19 @@
 import json
 import numpy as np
+import os
+import random
 
 class RankingCalculator:
     def __init__(self) -> None:
         self.call_count = 0
-        with open("ranking_config.json", 'r') as f:
-            params = json.load(f)
-        self.g_optimum = params["g_optimum"]
-        self.functions = params["functions"]
-        self.max_call_count = params["max_call_count"]
-        self.dimensions = params["dimensions"]
-        self.rand_seed = params["rand_seed"]
-        self.runs = params["runs"]
+        if os.path.exists("ranking_config.json"):
+            with open("ranking_config.json", 'r') as f:
+                params = json.load(f)
+            self.g_optimum = params["g_optimum"]
+            self.functions = params["functions"]
+            self.max_call_count = params["max_call_count"]
+            self.dimensions = params["dimensions"]
+            self.runs = params["runs"]
     
     def set_parameters(self, functions, max_call_count, dimensions, runs):
         self.functions = functions

@@ -23,20 +23,20 @@ function LandingPage() {
         })();
     }, []);
 
-    if (user !== null) {
-        return (
-            <Layout is_admin={isAdmin}>
-                <div className="landing-page-wrapper">
-                    <div className="landing-page">
-                        <h1>Welcome to this Ranking Evolutionary Algorithms Application</h1>
-                        <p>You are logged in</p>
-                        <p><strong>ID: </strong>{user.id}</p>
-                        <p><strong>Email: </strong>{user.email}</p>
-                    </div>
-                </div>
-            </Layout>
-        )
-    }
+    // if (user !== null) {
+    //     return (
+    //         <Layout is_admin={isAdmin}>
+    //             <div className="landing-page-wrapper">
+    //                 <div className="landing-page">
+    //                     <h1>Welcome to this Ranking Evolutionary Algorithms Application</h1>
+    //                     <p>You are logged in</p>
+    //                     <p><strong>ID: </strong>{user.id}</p>
+    //                     <p><strong>Email: </strong>{user.email}</p>
+    //                 </div>
+    //             </div>
+    //         </Layout>
+    //     )
+    // }
 
     return (
         <div className="landing-page-wrapper">
