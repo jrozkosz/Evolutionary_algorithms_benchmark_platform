@@ -13,7 +13,7 @@ As there is a risk that the uploaded code may be an exploit, each algorithm is e
 
 ## Technologies
 - **Frontend:** React, JavaScript, HTML, CSS  
-- **Backend:** Flask (Python)
+- **Backend:** Flask, Python
 - **Tests:** pytest
 - **Database:** MySQL, Redis (for server-side session management), SQLAlchemy (ORM)  
 - **MicroVMs:** Managed and launched using AWS Firecracker, with setup and execution handled via shell scripts initiated from the backend  
