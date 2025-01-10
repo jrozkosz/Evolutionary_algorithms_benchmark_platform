@@ -12,12 +12,12 @@ function LoginPage() {
         console.log(email, password);
 
         try {
-            await httpClient.post("/login", {
+            await httpClient.post("/auth/login", {
                 email,
                 password,
             });
 
-            window.location.href = "/information";
+            window.location.href = "/info/information";
         } catch (error) {
             if (error.response) {
                 if (error.response.status === 401) {

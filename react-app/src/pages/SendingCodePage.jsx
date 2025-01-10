@@ -19,7 +19,7 @@ function SendingCodePage() {
 	useOnMountUnsafe(() => {
 		(async () => {
 			try {
-				const resp = await httpClient.get("/@me");
+				const resp = await httpClient.get("/auth/@me");
 				setUser(resp.data);
 				setIsAdmin(resp.data.is_admin);
 			} catch (error) {
@@ -34,7 +34,7 @@ function SendingCodePage() {
 		if (user != null) {
 			const interval = setInterval(async () => {
 				try {
-					const response = await httpClient.get("/upload/progress");
+					const response = await httpClient.get("/algorithm/upload/progress");
 					setAlgorithms(response.data);
                     if (uploadedAlgorithms.algorithms.length === 0) {
                         setInformation("No algorithms uploaded yet.");
@@ -61,7 +61,7 @@ function SendingCodePage() {
 
     const handleDeletingAlgorithm = async (algorithm_id) => {
         try {
-            await httpClient.post("/delete_algorithm", {
+            await httpClient.post("/algorithm/delete_algorithm", {
                 "algorithm_id": algorithm_id
             })
 
@@ -93,7 +93,7 @@ function SendingCodePage() {
 		formData.append("file", selectedFile);
 
 		try {
-			await httpClient.post("/upload", formData);
+			await httpClient.post("/algorithm/upload", formData);
 			console.log("File uploaded successfully");
 
 			setSuccessMessage("Sent successfully");

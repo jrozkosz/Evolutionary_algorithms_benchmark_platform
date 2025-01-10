@@ -9,7 +9,7 @@ function Navbar({ is_admin }) {
 
   const logoutUser = async () => {
     try {
-    await httpClient.post("/logout");
+    await httpClient.post("/auth/logout");
     window.location.href = "/";
     } catch (error) {
       if (error.response) {

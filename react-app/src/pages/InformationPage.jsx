@@ -14,7 +14,7 @@ function InformationPage() {
     useOnMountUnsafe(() => {
         (async () => {
             try {
-                const resp = await httpClient.get("/@me");
+                const resp = await httpClient.get("/auth/@me");
                 setUser(resp.data);
                 setIsAdmin(resp.data.is_admin);
             } catch (error) {
@@ -29,7 +29,7 @@ function InformationPage() {
         if(user != null) {
             (async () => {
                 try {
-                    const resp = await httpClient.get("/information");
+                    const resp = await httpClient.get("/info/information");
                     setTexts(resp.data.texts);
                     console.log(resp.data.texts);
                 } catch (error) {
@@ -45,7 +45,7 @@ function InformationPage() {
 
     const deleteInformation = async (info_id) => {
         try {
-            await httpClient.post("/delete_info", {
+            await httpClient.post("/info/delete_info", {
                 info_id
             });
             setTexts(texts.filter(text => text.id !== info_id));

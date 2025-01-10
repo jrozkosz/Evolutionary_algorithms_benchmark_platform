@@ -12,7 +12,7 @@ function RegisterPage() {
 
     const registerUser = async () => {
         try {
-            await httpClient.post("/register", {
+            await httpClient.post("/auth/register", {
                 username,
                 email,
                 password,

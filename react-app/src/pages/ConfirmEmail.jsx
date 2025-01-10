@@ -14,7 +14,7 @@ function ConfirmEmailPage() {
     const confirmEmail = async () => {
       try {
         console.log("Request to Flask made...");
-        const response = await httpClient.post(`/confirm/${token}`);
+        const response = await httpClient.post(`/auth/confirm/${token}`);
         console.log(response.data)
         setMessage(response.data.info);
       } catch (error) {

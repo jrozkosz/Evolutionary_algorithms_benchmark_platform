@@ -17,7 +17,7 @@ function AdminPanelPage() {
     useOnMountUnsafe(() => {
         (async () => {
             try {
-                const resp = await httpClient.get("/@me");
+                const resp = await httpClient.get("/auth/@me");
                 setAdmin(resp.data);
                 setIsAdmin(resp.data.is_admin);
                 console.log(isAdmin);
@@ -33,7 +33,7 @@ function AdminPanelPage() {
         if(isAdmin) {
             (async () => {
                 try {
-                    const resp = await httpClient.get("/display_users");
+                    const resp = await httpClient.get("/admin/display_users");
                     setUsers(resp.data.users);
                 } catch (error) {
                     console.log("Error fetching users", error);
@@ -45,7 +45,7 @@ function AdminPanelPage() {
 
     const addInfoText = async () => {
         try {
-            await httpClient.post("/add_info", {
+            await httpClient.post("/info/add_info", {
                 infoText,
                 isCrucial
             });
@@ -62,7 +62,7 @@ function AdminPanelPage() {
 
     const deleteUser = async (user_id) => {
         try {
-            await httpClient.post("/delete_user", {
+            await httpClient.post("/admin/delete_user", {
                 "user_id": user_id
             });
             setUsers(users.filter(user => user.id !== user_id));

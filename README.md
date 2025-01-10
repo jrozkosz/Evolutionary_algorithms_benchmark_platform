@@ -1,7 +1,24 @@
 # ranking_algorithms
-A website for ranking evolutionary algorithms uploaded by users <br />
+A website for ranking evolutionary algorithms uploaded by users. <br />
+As there is a risk that the uploaded code may be an exploit, each algorithm is executed in a dedicated AWS Firecracker microVM.
+
+## Main Features
+- User registration with email confirmation  
+- Uploading algorithms by users  
+- Background testing of algorithms on complex and diverse mathematical functions
+- Visualized benchmark results of all user-submitted algorithms, presented through three different ranking methods
+- Viewing information on the user dashboard  
+- Admin panel for managing users, information, and uploaded algorithms   
+
+## Technologies
+- **Frontend:** React, JavaScript, HTML, CSS  
+- **Backend:** Flask (Python)
+- **Tests:** pytest
+- **Database:** MySQL, Redis (for server-side session management), SQLAlchemy (ORM)  
+- **MicroVMs:** Managed and launched using AWS Firecracker, with setup and execution handled via shell scripts initiated from the backend  
 
 
+# Setup and Launch instructions
 ## run frontend
 ### installing Node.js if is not present
 sudo apt update <br />
