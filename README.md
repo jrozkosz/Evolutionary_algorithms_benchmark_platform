@@ -1,11 +1,12 @@
-# ranking_algorithms
+# Evolutionary_algorithms_benchmark_platform
 A website for ranking evolutionary algorithms uploaded by users. <br />
 As there is a risk that the uploaded code may be an exploit, each algorithm is executed in a dedicated AWS Firecracker microVM.
 
 ## Main Features
 - User registration with email confirmation  
-- Uploading algorithms by users  
+- Uploading algorithms by users
 - Background testing of algorithms on complex and diverse mathematical functions
+- Secure execution of untrusted code by utilizing microVMs as a sandbox environment
 - Visualized benchmark results of all user-submitted algorithms, presented through three different ranking methods
 - Viewing information on the user dashboard  
 - Admin panel for managing users, information, and uploaded algorithms   
