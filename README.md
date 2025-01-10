@@ -16,7 +16,7 @@ As there is a risk that the uploaded code may be an exploit, each algorithm is e
 - **Backend:** Flask, Python
 - **Tests:** pytest
 - **Database:** MySQL, Redis (for server-side session management), SQLAlchemy (ORM)  
-- **MicroVMs:** Managed and launched using AWS Firecracker, with setup and execution handled via shell scripts initiated from the backend  
+- **MicroVMs:** Managed and launched using open-source AWS Firecracker software, with setup and execution handled via shell scripts initiated from the backend  
 
 
 # Setup and Launch instructions
