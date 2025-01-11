@@ -21,17 +21,17 @@ def create_app(test_config=None):
     bcrypt.init_app(app)
     server_session = Session(app)
 
-    # db.init_app(app)
-    # with app.app_context():
-    #     db.drop_all()
-    #     db.create_all()
+    db.init_app(app)
+    with app.app_context():
+        db.drop_all()
+        db.create_all()
 
-        # admin_exists = User.query.filter_by(username='admin').first() is not None
-        # if not admin_exists:
-        #     hashed_password = bcrypt.generate_password_hash('admin').decode('utf-8')
-        #     user = User(username='admin', email='admin', password=hashed_password, is_confirmed=True, is_admin=True)
-        #     db.session.add(user)
-        #     db.session.commit()
+        admin_exists = User.query.filter_by(username='admin').first() is not None
+        if not admin_exists:
+            hashed_password = bcrypt.generate_password_hash('admin').decode('utf-8')
+            user = User(username='admin', email='admin', password=hashed_password, is_confirmed=True, is_admin=True)
+            db.session.add(user)
+            db.session.commit()
     
     migrate = Migrate(app, db)
     mail = Mail(app)
